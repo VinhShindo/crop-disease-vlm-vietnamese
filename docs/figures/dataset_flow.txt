@@ -1,0 +1,12 @@
+
+Image + Vietnamese Text
+            |
+      Preprocessing
+            |
+      Feature Extraction
+            |
+       Multimodal Fusion
+            |
+      Classification
+            |
+      Disease Prediction

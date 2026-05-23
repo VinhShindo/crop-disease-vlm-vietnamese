@@ -1,0 +1,16 @@
+
+[ IMAGE ]
+     |
+EfficientNet-B0
+     |
+Image Feature
+     |
+     +------ Fusion ------+
+                           |
+                    PhoBERT Feature
+                           |
+                       [ TEXT ]
+                           |
+                    Classification
+                           |
+                    Disease Prediction

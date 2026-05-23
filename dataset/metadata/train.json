@@ -1,0 +1,20 @@
+[
+  {
+    "image": "images/train/blast/img001.jpg",
+    "text": "Lá có vết cháy hình thoi, trời mưa kéo dài.",
+    "label": "blast",
+    "weather": "rainy",
+    "humidity": 88,
+    "location": "Thai Binh",
+    "plant_age_days": 45
+  },
+  {
+    "image": "images/train/brown_spot/img002.jpg",
+    "text": "Xuất hiện đốm nâu nhỏ, lan từ mép lá.",
+    "label": "brown_spot",
+    "weather": "humid",
+    "humidity": 82,
+    "location": "Nam Dinh",
+    "plant_age_days": 40
+  }
+]

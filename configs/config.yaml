@@ -1,0 +1,28 @@
+
+project_name: vision_language_rice_disease
+
+model:
+  image_encoder: efficientnet_b0
+  text_encoder: phobert
+  fusion: concat
+
+training:
+  batch_size: 16
+  epochs: 30
+  image_size: 224
+  learning_rate: 0.0001
+
+dataset:
+  num_classes: 4
+  classes:
+    - healthy
+    - blast
+    - brown_spot
+    - bacterial_blight
+
+evaluation:
+  metrics:
+    - accuracy
+    - precision
+    - recall
+    - f1_score

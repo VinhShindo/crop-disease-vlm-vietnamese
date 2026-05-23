@@ -1,6 +1,4 @@
-# `README.md`
 
-```md
 # Vision-Language Rice Leaf Disease Detection
 
 ## Overview

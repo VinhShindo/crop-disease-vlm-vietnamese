@@ -1,5 +1,33 @@
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+rice_plant_venv/
+venv/
+.env
+
+# Dataset
+.dataset_cache/
+
+# Outputs
 outputs/checkpoints/
 outputs/logs/
-.env
+outputs/predictions/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+dataset/raw
+dataset/processed
+dataset/text_metadata

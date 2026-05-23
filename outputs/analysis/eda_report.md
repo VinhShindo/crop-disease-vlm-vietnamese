@@ -1,11 +1,18 @@
-# FULL EDA REPORT
+# MULTIMODAL EDA REPORT
 
 # 1. Dataset Overview
 
-Dataset hiện tại sử dụng:
-- Rice Leaf Diseases Dataset
+## Dataset Name
+Rice Leaf Diseases Dataset (Multimodal Extension)
 
-Bao gồm 4 classes:
+## Total Classes
+4
+
+## Total Images
+3355
+
+## Disease Classes
+
 - BrownSpot
 - Healthy
 - Hispa
@@ -15,173 +22,334 @@ Bao gồm 4 classes:
 
 # 2. Dataset Statistics
 
-| Class | Images |
-|---|---|
-| BrownSpot | 523 |
-| Healthy | 1488 |
-| Hispa | 565 |
-| LeafBlast | 779 |
+| Class | Number of Images | Percentage |
+|---|---:|---:|
+| BrownSpot | 523 | 15.59% |
+| Healthy | 1488 | 44.35% |
+| Hispa | 565 | 16.84% |
+| LeafBlast | 779 | 23.22% |
 
-Tổng số classes:
-- 4
+## Observations
 
----
-
-# 3. Dataset Quality Assessment
-
-## Ưu điểm
-
-- Ảnh chất lượng tốt
-- Ít corrupted image
-- Background đơn giản
-- Leaf region rõ ràng
-- Ít nhiễu
-- Resolution tương đối đồng đều
-
-## Nhược điểm
-
-- Chưa phản ánh điều kiện thực tế ngoài đồng
-- Background quá sạch
-- Thiếu ánh sáng tự nhiên
-- Thiếu shadow/noise
-- Thiếu ảnh nhiều lá
+- Healthy class contains the largest number of samples.
+- BrownSpot and Hispa classes contain fewer samples.
+- Dataset imbalance exists and may affect classification performance.
+- Stratified data split is required during training.
 
 ---
 
-# 4. Dataset Imbalance Analysis
+# 3. Image Analysis
 
-Class Healthy có số lượng ảnh lớn nhất.
+## Average Resolution
 
-Điều này gây nguy cơ:
-- Model bias
-- Overfitting vào lớp Healthy
-- Accuracy cao giả tạo
+- Width: 2049
+- Height: 2049
 
-## Đề xuất xử lý
+## Image Quality
 
-- Weighted Cross Entropy
-- Data Augmentation
-- F1-score monitoring
-- Stratified splitting
+- No corrupted image detected.
+- Images are visually clean.
+- Leaf regions are clearly visible.
+- Dataset quality is suitable for deep learning tasks.
 
----
+## Visual Characteristics
 
-# 5. Resolution Analysis
+The dataset contains:
+- varying leaf orientations
+- different disease severity levels
+- multiple texture patterns
+- different leaf colors
+- symptom variations across classes
 
-Resolution ảnh khá đồng đều.
+## Observations
 
-Điều này giúp:
-- training ổn định
-- preprocessing đơn giản
-- batching hiệu quả
+### Advantages
 
-Recommended input size:
-- 224x224
-- 256x256
+- High image resolution
+- Clear disease patterns
+- Low image corruption
+- Suitable for CNN and Transformer architectures
 
----
+### Limitations
 
-# 6. Model Suitability Analysis
-
-Dataset hiện tại phù hợp với:
-
-## Highly Recommended
-- EfficientNet-B0
-- ResNet50
-- ConvNeXt
-
-## Acceptable
-- Vision Transformer (ViT)
-
-## Not Recommended
-- Video models
-- Large multimodal transformers
-
-Lý do:
-Dataset là ảnh tĩnh, không có temporal information.
+- Background conditions are relatively simple
+- Limited environmental diversity
+- Few real-world field conditions
+- Limited lighting variations
 
 ---
 
-# 7. Implication for Vision-Language Learning
+# 4. Text Metadata Analysis
 
-Dataset hiện tại mới chỉ có image modality.
+## Metadata Summary
 
-Cần bổ sung:
-- mô tả tiếng Việt
-- metadata thời tiết
-- độ ẩm
-- vị trí địa lý
+Total Metadata Samples:
+3355
 
-Ví dụ:
+Average Texts Per Image:
+4.0
+
+Average Text Length:
+10.73 words
+
+Language:
+Vietnamese
+
+## Metadata Structure
+
+Each image contains:
+- image path
+- disease label
+- multiple Vietnamese descriptions
+- multimodal metadata
+
+Example:
 
 ```json
 {
-    "image": "LeafBlast_001.jpg",
-    "text": "Lá lúa xuất hiện vết cháy màu nâu vàng.",
-    "weather": "rainy",
-    "humidity": 85
+  "image": "BrownSpot/img_001.jpg",
+  "texts": [
+    "Lá lúa xuất hiện nhiều đốm nâu nhỏ.",
+    "Phiến lá có các vùng cháy màu nâu.",
+    "Triệu chứng bệnh đốm nâu xuất hiện rõ."
+  ],
+  "label": "BrownSpot"
 }
 ````
 
 ---
 
-# 8. Recommended Pipeline
+# 5. Text Dataset Observations
 
-## Step 1
+## Advantages
 
-EDA & dataset validation
+* Multiple descriptions per image improve semantic diversity.
+* Vietnamese symptom descriptions support NLP learning.
+* Metadata increases multimodal research novelty.
+* Text information can improve disease discrimination.
 
-## Step 2
+## Semantic Information Included
 
-Metadata generation
+Descriptions contain:
 
-## Step 3
+* disease symptoms
+* lesion appearance
+* color changes
+* texture abnormalities
+* infection severity
+* visual characteristics
 
-Image preprocessing
+## Importance for Vision-Language Learning
 
-## Step 4
+The text metadata enables:
 
-Train EfficientNet baseline
-
-## Step 5
-
-Train multimodal model:
-
-* EfficientNet
-* PhoBERT
-* Fusion Layer
-
-## Step 6
-
-Evaluation
+* image-text alignment
+* multimodal embedding learning
+* semantic disease understanding
+* Vietnamese agricultural NLP research
 
 ---
 
-# 9. Evaluation Metrics
+# 6. Dataset Challenges
 
-## Classification
+## 1. Class Imbalance
+
+Healthy class contains significantly more samples.
+
+Potential impacts:
+
+* model bias toward Healthy class
+* reduced recall for minority disease classes
+* unstable macro metrics
+
+Recommended solutions:
+
+* weighted loss
+* focal loss
+* oversampling
+* data augmentation
+* class-balanced training
+
+---
+
+## 2. Domain Gap
+
+Current dataset characteristics:
+
+* mostly clean backgrounds
+* controlled capture conditions
+* limited real-field complexity
+
+Potential problems:
+
+* reduced generalization in real farms
+* sensitivity to lighting/environment changes
+
+Recommended solutions:
+
+* field data collection
+* domain adaptation
+* strong augmentation
+* real-world validation
+
+---
+
+## 3. Synthetic Metadata Limitation
+
+Current Vietnamese descriptions are generated programmatically.
+
+Potential limitations:
+
+* repetitive linguistic patterns
+* limited contextual diversity
+* lack of farmer-style descriptions
+
+Recommended improvements:
+
+* collect real agricultural reports
+* add weather information
+* add environmental context
+* include farmer observations
+
+---
+
+# 7. Recommended Training Strategy
+
+## Image Encoder
+
+Recommended:
+
+* EfficientNet-B0
+
+Alternative:
+
+* Vision Transformer (ViT)
+* ConvNeXt
+* Swin Transformer
+
+---
+
+## Text Encoder
+
+Recommended:
+
+* PhoBERT
+
+Alternative:
+
+* viBERT
+* XLM-R
+* multilingual BERT
+
+---
+
+## Fusion Strategy
+
+Recommended:
+
+* Cross Attention
+* Feature Concatenation
+
+Advanced options:
+
+* Multimodal Transformer
+* BLIP-style Fusion
+* CLIP-style Alignment
+
+---
+
+## Recommended Input Resolution
+
+* 224x224
+* 256x256
+
+---
+
+## Recommended Batch Size
+
+Depending on GPU:
+
+* 16
+* 32
+* 64
+
+---
+
+# 8. Recommended Evaluation Metrics
+
+## Classification Metrics
 
 * Accuracy
 * Precision
 * Recall
 * F1-score
 
-Main metric:
+## Main Metric
 
-* F1-score
+F1-score
+
+Reason:
+Dataset imbalance makes F1-score more reliable than accuracy.
+
+## Additional Evaluation
+
+* Confusion Matrix
+* Per-class Recall
+* Macro F1-score
+* Weighted F1-score
 
 ---
 
-# 10. Conclusions
+# 9. Expected Research Contributions
 
-Dataset hiện tại:
+This project contributes to:
 
-* phù hợp cho baseline AI model
-* phù hợp cho luận văn
-* phù hợp cho multimodal research
+* Vietnamese agricultural AI
+* Vision-Language learning
+* Multimodal disease classification
+* Smart farming applications
+* Vietnamese NLP for agriculture
 
-Tuy nhiên:
+## Research Novelty
 
-* cần thêm dữ liệu thực tế
-* cần metadata tiếng Việt
-* cần augmentation mạnh để tăng generalization
+The main novelty includes:
+
+* multimodal rice disease recognition
+* Vietnamese symptom descriptions
+* image-text fusion for agriculture
+* domain-specific Vietnamese metadata generation
+
+---
+
+# 10. Generated Files
+
+## Visualizations
+
+* class_distribution.png
+* dataset_overview.png
+* image_resolution_distribution.png
+* text_length_distribution.png
+* texts_per_image_distribution.png
+
+## Analysis Files
+
+* dataset_statistics.csv
+* text_statistics.csv
+* corrupted_images.csv
+* eda_report.md
+
+---
+
+# 11. Conclusion
+
+The dataset is suitable for:
+
+* rice leaf disease classification
+* multimodal learning
+* Vietnamese Vision-Language research
+* agricultural AI systems
+* deep learning experimentation
+
+The dataset quality, image resolution, and Vietnamese metadata
+provide a strong foundation for developing a Vision-Language
+model for smart agriculture applications.

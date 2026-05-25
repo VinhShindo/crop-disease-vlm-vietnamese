@@ -100,20 +100,33 @@ Vietnamese
 Each image contains:
 - image path
 - disease label
-- multiple Vietnamese descriptions
-- multimodal metadata
+- Vietnamese disease name
+- multiple image-grounded Vietnamese descriptions
+- visual analysis observations
+- lesion area ratios and image quality metrics
+- annotation confidence and metadata quality tags
 
 Example:
 
 ```json
 {
-  "image": "BrownSpot/img_001.jpg",
+  "image": "dataset/raw/BrownSpot/IMG_20190419_124212.jpg",
+  "label": "BrownSpot",
+  "vietnamese_label": "Đốm nâu",
   "texts": [
-    "Lá lúa xuất hiện nhiều đốm nâu nhỏ.",
-    "Phiến lá có các vùng cháy màu nâu.",
-    "Triệu chứng bệnh đốm nâu xuất hiện rõ."
+    "Lá xuất hiện các vùng tổn thương màu nâu sẫm.",
+    "Các đốm nâu nhỏ phân bố trên phiến lá.",
+    "Lá bị cháy nhẹ với nhiều đốm nâu phân bố không đều."
   ],
-  "label": "BrownSpot"
+  "visual_analysis": [
+    "Trên phiến lá xuất hiện nhiều đốm nâu nhỏ hoặc các vết bệnh rải rác.",
+    "Ảnh chứa phần lớn phiến lá và cho thấy cấu trúc lá rõ ràng.",
+    "Các đốm bệnh màu nâu bắt đầu lan rộng trên phiến lá."
+  ],
+  "leaf_area_ratio": 0.98,
+  "lesion_area_ratio": 0.72,
+  "annotation_confidence": 0.86,
+  "metadata_quality": "medium"
 }
 ````
 

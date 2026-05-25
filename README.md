@@ -79,10 +79,28 @@ dataset/
 │   └── LeafBlast/
 │
 ├── metadata/
-│   └── all_metadata.json
+│   ├── all_metadata.json
+│   ├── metadata.csv
+│   └── metadata_summary.json
 │
 └── processed/
 ````
+
+## Metadata Schema
+
+`dataset/metadata/all_metadata.json` is the core multimodal corpus. Each record includes:
+
+- `image`: relative image path inside `dataset/raw`
+- `label`: disease category
+- `vietnamese_label`: Vietnamese disease name
+- `texts`: multiple Vietnamese descriptions grounded in the image
+- `symptoms`: disease symptom keywords
+- `weather`, `humidity`, `temperature`, `severity`, `growth_stage`, `location`, `farmer_note`
+- `visual_analysis`: image-grounded observations of lesion appearance and leaf quality
+- `leaf_area_ratio`, `lesion_area_ratio`: quantifiable visual proxies for leaf coverage and damage
+- `annotation_confidence`, `metadata_quality`
+
+This schema supports vision-language pretraining, contrastive learning, and multimodal fusion experiments.
 
 ---
 

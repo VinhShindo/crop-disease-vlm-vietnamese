@@ -1,0 +1,23 @@
+{
+  "total_samples": 3355,
+  "classes": {
+    "BrownSpot": 523,
+    "Healthy": 1488,
+    "Hispa": 565,
+    "LeafBlast": 779
+  },
+  "metadata_fields": [
+    "image",
+    "label",
+    "vietnamese_label",
+    "texts",
+    "symptoms",
+    "weather",
+    "humidity",
+    "temperature",
+    "severity",
+    "growth_stage",
+    "location",
+    "farmer_note"
+  ]
+}

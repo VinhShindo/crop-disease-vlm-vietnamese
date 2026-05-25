@@ -31,3 +31,5 @@ Thumbs.db
 dataset/raw
 dataset/processed
 dataset/text_metadata
+
+pipeline.md

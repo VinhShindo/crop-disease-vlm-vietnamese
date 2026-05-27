@@ -1,399 +1,142 @@
-# Vision-Language Rice Leaf Disease Detection
+# Rice Leaf Disease — Khám phá dữ liệu (Dataset EDA)
 
-## Overview
+## 1. Tổng quan đề tài
 
-Đề tài xây dựng hệ thống Vision-Language AI cho nhận dạng sâu bệnh cây lúa từ:
+Mục tiêu: phân tích dữ liệu ảnh-lời mô tả tiếng Việt cho bệnh lá lúa, đánh giá chất lượng dataset, rủi ro và đề xuất cải thiện để phục vụ nghiên cứu VLM (Vision-Language Models) và bài luận/luận văn.
 
-- ảnh lá lúa
-- mô tả hiện trường bằng tiếng Việt
-
-Mục tiêu của đề tài là kết hợp Computer Vision và Natural Language Processing
-để nâng cao khả năng nhận dạng bệnh cây trong môi trường nông nghiệp thông minh.
+Key facts:
+- Tổng số mẫu: **3,355 ảnh**
+- Số lớp: **4** (Healthy, LeafBlast, Hispa, BrownSpot)
 
 ---
 
-# Project Goals
+## 2. Thông tin dataset
 
-- Nhận dạng bệnh lá lúa từ ảnh
-- Kết hợp ảnh + text tiếng Việt
-- Tăng độ chính xác nhờ multimodal learning
-- Hỗ trợ nông nghiệp thông minh
-- Hướng tới triển khai thực tế
+- Các trường metadata chính: `image`, `label`, `vietnamese_label`, `texts`, `symptoms`, `visual_analysis`, `leaf_area_ratio`, `lesion_area_ratio`, `annotation_confidence`, `metadata_quality`, `weather`, `humidity`, `temperature`, `severity`, `growth_stage`, `location`, `farmer_note`.
+- Phân bố lớp (summary):
 
----
+| Class | Count | Percentage |
+|---|---:|---:|
+| Healthy | 1,488 | 44.4% |
+| LeafBlast | 779 | 23.2% |
+| Hispa | 565 | 16.8% |
+| BrownSpot | 523 | 15.6% |
 
-# Main Architecture
-
-## Vision Encoder
-- EfficientNet-B0
-
-## Text Encoder
-- PhoBERT
-
-## Fusion Strategy
-- Cross Attention
-- Feature Concatenation
-
-## Output
-- Disease Classification
+Nhận xét: dataset mất cân bằng (Healthy chiếm lớn nhất), cần áp dụng chiến lược huấn luyện/augmentation để tránh bias.
 
 ---
 
-# Disease Classes
+## 3. Bằng chứng hình ảnh (Visual Evidence)
 
-Dataset hiện tại gồm 4 lớp:
+### 3.1 Collage đại diện theo lớp
+![Class Visual Collage](outputs/visualizations/class_visual_collage.png)
 
-- BrownSpot
-- Healthy
-- Hispa
-- LeafBlast
+Nhận xét: nhiều ảnh chụp trên nền trắng, close-up một lá, ít bối cảnh hiện trường.
 
----
-
-# Recommended Metrics
-
-## Classification Metrics
-
-- Accuracy
-- Precision
-- Recall
-- F1-score
-
-## Main Metric
-
-- F1-score
-
-Lý do:
-Dataset có hiện tượng imbalance giữa các lớp nên F1-score phản ánh hiệu quả tốt hơn Accuracy.
-
----
-
-# Dataset Structure
-
-```text
-dataset/
-├── raw/
-│   ├── BrownSpot/
-│   ├── Healthy/
-│   ├── Hispa/
-│   └── LeafBlast/
-│
-├── metadata/
-│   ├── all_metadata.json
-│   ├── metadata.csv
-│   └── metadata_summary.json
-│
-└── processed/
-````
-
-## Metadata Schema
-
-`dataset/metadata/all_metadata.json` is the core multimodal corpus. Each record includes:
-
-- `image`: relative image path inside `dataset/raw`
-- `label`: disease category
-- `vietnamese_label`: Vietnamese disease name
-- `texts`: multiple Vietnamese descriptions grounded in the image
-- `symptoms`: disease symptom keywords
-- `weather`, `humidity`, `temperature`, `severity`, `growth_stage`, `location`, `farmer_note`
-- `visual_analysis`: image-grounded observations of lesion appearance and leaf quality
-- `leaf_area_ratio`, `lesion_area_ratio`: quantifiable visual proxies for leaf coverage and damage
-- `annotation_confidence`, `metadata_quality`
-
-This schema supports vision-language pretraining, contrastive learning, and multimodal fusion experiments.
-
----
-
-# Project Structure
-
-```text
-CROP-DISEASE-VLM-VIET/
-│
-├── configs/
-├── dataset/
-├── docs/
-├── notebooks/
-├── outputs/
-│   ├── analysis/
-│   └── visualizations/
-│
-├── scripts/
-├── src/
-├── tests/
-│
-├── README.md
-├── requirements.txt
-└── .gitignore
-```
-
----
-
-# Recommended Hardware
-
-## Minimum
-
-* RTX 3060 12GB
-* RAM 32GB
-
-## Recommended
-
-* RTX 4070
-* RTX 4080
-* RAM 32GB+
-
----
-
-# EDA (Exploratory Data Analysis)
-
-## Dataset Statistics
-
-| Class     | Number of Images |
-| --------- | ---------------: |
-| BrownSpot |              523 |
-| Healthy   |             1488 |
-| Hispa     |              565 |
-| LeafBlast |              779 |
-
-## Total Images
-
-3355
-
-## Total Classes
-
-4
-
----
-
-# Dataset Insights
-
-## 1. Dataset Imbalance
-
-Class Healthy có số lượng ảnh lớn hơn đáng kể so với các lớp bệnh.
-
-### Potential Issues
-
-* model bias
-* over-predict Healthy
-* giảm Recall của lớp bệnh
-* giảm Macro F1-score
-
-### Recommended Solutions
-
-* Weighted Loss
-* Focal Loss
-* Data Augmentation
-* Stratified Split
-* F1-score monitoring
-
----
-
-## 2. Dataset Quality
-
-### Advantages
-
-* ảnh sạch
-* background đơn giản
-* ít noise
-* object rõ ràng
-* resolution cao
-* triệu chứng bệnh rõ
-
-### Limitations
-
-* chưa phản ánh điều kiện ngoài thực tế
-* thiếu ảnh ánh sáng phức tạp
-* thiếu ảnh ngoài đồng ruộng
-* domain diversity còn hạn chế
-
----
-
-## 3. Resolution Consistency
-
-Resolution ảnh khá đồng đều.
-
-Average resolution:
-
-* 2049 x 2049
-
-Điều này phù hợp cho:
-
-* EfficientNet
-* Vision Transformer
-* CNN training
-* Transfer Learning
-
-### Recommended Resize
-
-* 224x224
-* 256x256
-
----
-
-# Multimodal Metadata
-
-Mỗi ảnh được gắn:
-
-* nhiều mô tả tiếng Việt
-* triệu chứng bệnh
-* mô tả tổn thương lá
-* semantic disease descriptions
-
-Ví dụ:
-
-```json
-{
-  "image": "BrownSpot/img_001.jpg",
-  "texts": [
-    "Lá lúa xuất hiện nhiều đốm nâu nhỏ.",
-    "Phiến lá có các vùng cháy màu nâu.",
-    "Triệu chứng bệnh đốm nâu xuất hiện rõ."
-  ],
-  "label": "BrownSpot"
-}
-```
-
----
-
-# Metadata Insights
-
-## Advantages
-
-* Multiple text descriptions per image
-* Vietnamese agricultural semantics
-* Improved multimodal learning
-* Better image-text alignment
-
-## Research Novelty
-
-* Vision-Language learning cho nông nghiệp
-* Vietnamese agricultural NLP
-* Image-text disease fusion
-* Smart farming AI systems
-
----
-
-# EDA Outputs
-
-## Class Distribution
-
-![Class Distribution](outputs/visualizations/class_distribution.png)
-
----
-
-## Dataset Overview
-
-![Dataset Overview](outputs/visualizations/dataset_overview.png)
-
----
-
-## Image Resolution Distribution
-
+### 3.2 Phân bố độ phân giải
 ![Resolution Distribution](outputs/visualizations/image_resolution_distribution.png)
 
----
+Nhận xét: ảnh có độ phân giải cao và tương đồng, tốt cho training nhưng kém đa dạng miền thực địa.
 
-## Text Length Distribution
-
+### 3.3 Thống kê văn bản
 ![Text Length Distribution](outputs/visualizations/text_length_distribution.png)
-
----
-
-## Texts Per Image Distribution
-
 ![Texts Per Image](outputs/visualizations/texts_per_image_distribution.png)
+![Top Metadata Words](outputs/visualizations/word_frequency.png)
+
+Nhận xét: trung bình ~3.87 câu/ảnh, độ dài ~11 từ; chỉ **32 câu duy nhất** xuất hiện lặp lại → rủi ro template-driven text.
+
+### 3.4 Gallery ảnh-văn bản (cặp mẫu)
+![Image-Text Pairs](outputs/visualizations/image_text_pairs.png)
+
+Ghi chú: artifact này đã được làm lại và hiện hiển thị cặp ảnh-văn bản mẫu; cần mở rộng gallery verified.
 
 ---
 
-# Current EDA Features
+## 4. Sơ đồ hệ thống (System Diagram)
 
-* Class distribution analysis
-* Dataset visualization
-* Resolution analysis
-* Metadata analysis
-* Text distribution analysis
-* Corrupted image detection
-* Automatic EDA report generation
+Hệ thống nghiên cứu và pipeline mô phỏng (data → preprocessing → multimodal model → explainability → evaluation).
+
+![Sơ đồ hệ thống](docs/research_notes/so_do.png)
+
+Gợi ý trình bày slide: đặt sơ đồ này ngay sau phần overview để khán giả nắm luồng dữ liệu.
 
 ---
 
-# Recommended Training Pipeline
+## 5. Huấn luyện & Kiến trúc đề xuất
 
-## Step 1 — Image Preprocessing
+- Kiến trúc gợi ý:
+	- Image encoder: EfficientNet-B0 / ResNet50 backbone
+	- Text encoder: PhoBERT (Vietnamese)
+	- Fusion: cross-attention hoặc projection + contrastive loss (CLIP-style)
 
-* Resize
-* Normalize
-* Augmentation
+- Chiến lược huấn luyện:
+	1. Pretrain contrastive trên subset `high-confidence` (nếu có)
+	2. Fine-tune toàn bộ dataset với class-weighted loss hoặc focal loss
+	3. Validation: Macro F1, per-class recall, retrieval@k
 
-## Step 2 — Text Preprocessing
-
-* Vietnamese tokenization
-* Text cleaning
-* PhoBERT tokenizer
-
-## Step 3 — Feature Extraction
-
-### Vision
-
-* EfficientNet-B0
-
-### NLP
-
-* PhoBERT
-
-## Step 4 — Multimodal Fusion
-
-* Cross Attention
-* Feature Concatenation
-
-## Step 5 — Classification
-
-* Fully Connected Layer
-* Softmax
-
-## Step 6 — Evaluation
-
-* F1-score
-* Precision
-* Recall
-* Confusion Matrix
+- Dataset split khuyến nghị: train 80% / val 10% / test 10% (stratified theo label)
 
 ---
 
-# Future Work
+## 6. Đánh giá & Explainability
 
-## Dataset
+- Embedding visualization: `outputs/visualizations/embeddings/tsne_embeddings.png` (phân tách lớp chưa rõ ràng)
+- Explainability hiện tại: `outputs/visualizations/xai/pseudo_gradcam.png` — nên thay bằng Grad-CAM thực để minh chứng vùng tổn thương.
+- Confusion matrix: `outputs/visualizations/error_analysis/confusion_matrix.png`
 
-* Thu thập ảnh thực tế ngoài đồng
-* Tăng diversity dữ liệu
-* Thêm weather metadata
-* Thêm geolocation metadata
-
-## AI Model
-
-* Vision-Language Fusion
-* Segmentation
-* Explainable AI
-* Mobile deployment
-* Lightweight inference
-
-## System
-
-* Chatbot nông nghiệp
-* Real-time inference
-* Edge AI deployment
-* Smart farming assistant
+Nhận xét: BrownSpot thường bị nhầm với Healthy/LeafBlast; cần augmentation đặc thù cho BrownSpot.
 
 ---
 
-# Research Direction
+## 7. Kết quả triển khai (Deployment)
 
-Đề tài hướng tới:
+- Hiện tại repository chưa chứa mô hình triển khai production sẵn sàng.
+- Gợi ý kết quả triển khai cần chuẩn bị:
+	- API inference endpoint (FastAPI/Flask) trả về label + confidence + attention map
+	- Docker image với model và preprocessing
+	- Test dataset for API sanity checks
 
-* Multimodal AI
-* Agricultural AI
-* Vietnamese Vision-Language Models
-* Smart Farming Systems
-* AI for Precision Agriculture
+Bạn có muốn mình tạo mẫu Dockerfile + minimal FastAPI inference scaffold không?
 
+---
+
+## 8. Hướng dẫn chạy nhanh (Quick Start)
+
+Chuẩn bị môi trường (virtualenv trong repo):
+```bash
+source rice_plant_venv/bin/activate
 ```
 
+Chạy EDA và sinh lại các ảnh visualizations:
+```bash
+./rice_plant_venv/bin/python src/datasets/EDA.py
+```
+
+Chạy huấn luyện (ví dụ):
+```bash
+./rice_plant_venv/bin/python src/train.py --config configs/config.yaml
+```
+
+Gợi ý kiểm tra outputs:
+- Visuals: `outputs/visualizations/`
+- Báo cáo: `outputs/analysis/eda_report.md`
+
+---
+
+## 9. Checklist để hoàn thiện báo cáo/luận văn
+
+- Tạo `high-confidence` subset (500 mẫu) để pretrain/đánh giá
+- Mở rộng 50–100 cặp ảnh-văn bản được verify thủ công
+- Thay `pseudo_gradcam` bằng Grad-CAM thực và bổ sung overlay
+- Thu thập ảnh field (500–1000) để kiểm tra domain gap
+
+---
+
+## 10. Tài liệu tham khảo & liên hệ
+
+- Các script chính: `src/datasets/EDA.py`, `src/train.py`, `src/models/vision_language_model.py`
+- Nếu cần, mình có thể chuẩn hóa slide (PPT) theo cấu trúc trên hoặc tạo mã FastAPI/Docker demo.
+
+---
+
+_Tệp hình ảnh dùng trong báo cáo nằm trong `outputs/visualizations/` và sơ đồ hệ thống tại `docs/research_notes/so_do.png`._

@@ -33,3 +33,6 @@ dataset/processed
 dataset/text_metadata
 
 pipeline.md
+
+src/datasets/EDA/check_gen_text.py
+src/datasets/EDA/edit_text_data.py

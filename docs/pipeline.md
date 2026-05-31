@@ -1,28 +1,135 @@
-
 # TRAINING PIPELINE
 
-## Step 1
-Image preprocessing
-- resize
-- normalize
-- augmentation
+## Phase 1 — Data Preparation
 
-## Step 2
-Text preprocessing
-- tokenize
-- clean text
+Dataset Cleaning
 
-## Step 3
-Feature Extraction
-- EfficientNet
-- PhoBERT
+* kiểm tra ảnh lỗi
+* kiểm tra metadata lỗi
 
-## Step 4
-Fusion
+---
 
-## Step 5
-Classification
+Dataset Split
 
-## Step 6
-Evaluation
+Train
+Validation
+Test
 
+Recommended:
+
+70%
+15%
+15%
+
+Stratified Split
+
+---
+
+## Phase 2 — Image Processing
+
+Resize
+
+224×224
+
+Normalize
+
+ImageNet Statistics
+
+Data Augmentation:
+
+* Horizontal Flip
+* Rotation
+* Color Jitter
+* Random Crop
+
+---
+
+## Phase 3 — Text Processing
+
+Input:
+
+Vietnamese metadata
+
+Processing:
+
+* lowercase
+* tokenize
+* attention mask
+
+Tokenizer:
+
+PhoBERT Tokenizer
+
+---
+
+## Phase 4 — Feature Extraction
+
+Vision Encoder:
+
+EfficientNet-B0
+
+Text Encoder:
+
+PhoBERT
+
+---
+
+## Phase 5 — Multimodal Fusion
+
+Baseline:
+
+Feature Concatenation
+
+Research Model:
+
+Cross-Attention Fusion
+
+---
+
+## Phase 6 — Classification
+
+MLP Classifier
+
+Output:
+
+4 Disease Classes
+
+---
+
+## Phase 7 — Evaluation
+
+Metrics:
+
+* Accuracy
+* Precision
+* Recall
+* Macro F1
+
+Main Metric:
+
+Macro F1-score
+
+---
+
+## Phase 8 — Explainable AI
+
+Grad-CAM
+
+Attention Visualization
+
+Cross-Attention Analysis
+
+---
+
+## Phase 9 — Embedding Analysis
+
+t-SNE
+
+UMAP
+
+Embedding Space Visualization
+
+Mục tiêu:
+
+* đánh giá semantic separation
+* đánh giá multimodal alignment

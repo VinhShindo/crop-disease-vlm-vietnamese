@@ -1,24 +1,35 @@
-
-project_name: vision_language_rice_disease
+project_name: rice_disease_multimodal
 
 model:
   image_encoder: efficientnet_b0
   text_encoder: phobert
-  fusion: concat
-
-training:
-  batch_size: 16
-  epochs: 30
-  image_size: 224
-  learning_rate: 0.0001
+  num_classes: 4
+  fusion: cross_attention
 
 dataset:
   num_classes: 4
   classes:
-    - healthy
-    - blast
-    - brown_spot
-    - bacterial_blight
+    - BrownSpot
+    - Healthy
+    - Hispa
+    - LeafBlast
+
+data:
+  train_metadata: dataset/splits/train.json
+  val_metadata: dataset/splits/val.json
+  test_metadata: dataset/splits/test.json
+  image_size: 224
+  max_length: 128
+  num_workers: 4
+
+training:
+  seed: 42
+  batch_size: 16
+  epochs: 30
+  lr: 1e-4
+  weight_decay: 1e-4
+  grad_clip_norm: 1.0
+  patience: 4
 
 evaluation:
   metrics:
@@ -26,3 +37,9 @@ evaluation:
     - precision
     - recall
     - f1_score
+
+outputs:
+  checkpoints: outputs/checkpoints
+  figures: outputs/figures
+  metrics: outputs/metrics
+  predictions: outputs/predictions

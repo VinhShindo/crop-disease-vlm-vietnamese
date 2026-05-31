@@ -1,12 +1,66 @@
+=================================================================================
+                     MULTIMODAL RICE DISEASE CLASSIFIER
+=================================================================================
 
-Image + Vietnamese Text
-            |
-      Preprocessing
-            |
-      Feature Extraction
-            |
-       Multimodal Fusion
-            |
-      Classification
-            |
-      Disease Prediction
+                              ┌─────────────────┐
+                              │ Rice Leaf Image │
+                              └────────┬────────┘
+                                       │
+                                       ▼
+                              Resize + Normalize
+                                       │
+                                       ▼
+                         ┌─────────────────────────┐
+                         │     EfficientNet-B0     │
+                         │      Vision Encoder     │
+                         └───────────┬─────────────┘
+                                     │
+                                     ▼
+                             Image Embedding
+                                 (768-d)
+                                     │
+                                     │
+                                     ▼
+                      ┌──────────────────────────────┐
+                      │     Cross-Attention Fusion   │
+                      │      Image ↔ Text Tokens     │
+                      └──────────────┬───────────────┘
+                                     │
+                                     ▼
+                          Enhanced Concat + MLP
+                                     │
+                                     ▼
+                              Final Feature
+                                     │
+                                     ▼
+                         ┌─────────────────────────┐
+                         │      Classifier MLP     │
+                         │        Softmax          │
+                         └───────────┬─────────────┘
+                                     │
+                                     ▼
+
+                     BrownSpot | Healthy | Hispa | LeafBlast
+
+                                     ▲
+                                     │
+                                     │
+
+                        ┌─────────────────────────┐
+                        │ Vietnamese Description  │
+                        └───────────┬─────────────┘
+                                    │
+                                    ▼
+                              PhoBERT Tokenizer
+                                    │
+                                    ▼
+                        ┌─────────────────────────┐
+                        │         PhoBERT         │
+                        │    Language Encoder     │
+                        └───────────┬─────────────┘
+                                    │
+                                    ▼
+                              Text Embedding
+                                  (768-d)
+
+=================================================================================

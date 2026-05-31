@@ -1,16 +1,75 @@
+=========================================================
+RICE LEAF MULTIMODAL CLASSIFICATION PIPELINE
+=========================================================
 
-[ IMAGE ]
-     |
-EfficientNet-B0
-     |
-Image Feature
-     |
-     +------ Fusion ------+
-                           |
-                    PhoBERT Feature
-                           |
-                       [ TEXT ]
-                           |
-                    Classification
-                           |
-                    Disease Prediction
+Image + Vietnamese Description
+                │
+                ▼
+         Data Preprocessing
+     ┌───────────────────────┐
+     │ Image Resize          │
+     │ Image Normalize       │
+     │ Text Cleaning         │
+     │ PhoBERT Tokenization  │
+     └───────────────────────┘
+                │
+                ▼
+         Feature Extraction
+
+      ┌───────────────────┐
+      │ EfficientNet-B0   │
+      │ Vision Encoder    │
+      └───────────────────┘
+                │
+                ▼
+         Image Embedding
+                │
+
+      ┌───────────────────┐
+      │ PhoBERT           │
+      │ Language Encoder  │
+      └───────────────────┘
+                │
+                ▼
+          Text Embedding
+
+                │
+                ▼
+
+         Multimodal Fusion
+      ┌──────────────────────┐
+      │ Cross Attention      │
+      │ Enhanced Concat      │
+      │ Feature Interaction  │
+      └──────────────────────┘
+
+                │
+                ▼
+
+           Classifier
+      ┌──────────────────────┐
+      │ MLP                  │
+      │ Dropout              │
+      │ Softmax              │
+      └──────────────────────┘
+
+                │
+                ▼
+
+        Rice Disease Output
+
+      • BrownSpot
+      • Healthy
+      • Hispa
+      • LeafBlast
+
+                │
+                ▼
+
+           Evaluation
+
+      • Accuracy
+      • Precision
+      • Recall
+      • F1-score
+      • Confusion Matrix

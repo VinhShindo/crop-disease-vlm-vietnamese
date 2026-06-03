@@ -10,7 +10,7 @@ from utils.fs import ensure_dir
 
 
 @torch.no_grad()
-def evaluate(model, dataloader, device, class_names, output_dir="outputs"):
+def evaluate(model, dataloader, device, class_names, output_dir="outputs/metrics"):
     model.eval()
 
     y_true = []
@@ -44,8 +44,48 @@ def evaluate(model, dataloader, device, class_names, output_dir="outputs"):
     with open(metrics_path, "w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=2, ensure_ascii=False)
 
-    print(metrics)
+    print("\n" + "="*50)
+    print("EVALUATION RESULTS")
+    print("="*50)
+    for k, v in metrics.items():
+        print(f"{k}: {v:.4f}")
+    print("="*50)
+    print("\nClassification Report:")
     print(report)
 
     plot_confusion_matrix(y_true, y_pred, class_names, str(confusion_path))
     return metrics
+
+def evaluate_with_analysis(model, dataloader, device, class_names, output_dir="outputs"):
+    """Evaluate with detailed analysis"""
+    
+    # Import các functions mới
+    from evaluation.tsne_visualization import extract_embeddings, plot_tsne_embeddings, plot_embedding_separation
+    from evaluation.error_analysis import analyze_errors, plot_error_distribution
+    
+    output_path = Path(output_dir)
+    
+    # 1. Standard evaluation
+    metrics = evaluate(model, dataloader, device, class_names, output_dir)
+    
+    # 2. Extract embeddings for t-SNE
+    print("\nExtracting embeddings for t-SNE...")
+    embeddings_dict = extract_embeddings(model, dataloader, device, output_dir)
+    
+    # 3. Plot t-SNE
+    tsne_path = output_path.parent / "figures" / "tsne_visualization.png"
+    plot_tsne_embeddings(embeddings_dict, tsne_path, class_names)
+    
+    # 4. Plot embedding separation
+    separation_path = output_path.parent / "figures" / "embedding_separation.png"
+    plot_embedding_separation(embeddings_dict, separation_path, class_names)
+    
+    # 5. Error analysis
+    df_errors, confusion_pairs = analyze_errors(model, dataloader, device, class_names, output_dir)
+    
+    # 6. Plot error distribution
+    if len(df_errors) > 0:
+        error_plot_path = output_path.parent / "figures" / "error_distribution.png"
+        plot_error_distribution(df_errors, error_plot_path, class_names)
+    
+    return metrics, embeddings_dict, df_errors

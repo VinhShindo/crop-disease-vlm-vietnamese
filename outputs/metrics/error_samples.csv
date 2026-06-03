@@ -1,0 +1,85 @@
+﻿batch_idx,sample_idx,image_path,true_label,true_label_id,pred_label,pred_label_id,raw_text,metadata_available
+1,6,dataset\raw\BrownSpot\IMG_20190420_194506.jpg,BrownSpot,0,LeafBlast,3,"Lá lúa có biểu hiện bị vàng hóa rõ rệt, trên bề mặt xuất hiện rải rác các vết đốm màu nâu nhỏ, hình bầu dục kéo dài dọc theo gân lá.
+[SEP]
+Màu sắc lá chuyển từ xanh sinh lý sang vàng nhạt, biểu hiện của sự suy giảm diệp lục. Các vết bệnh có màu nâu sẫm, một số vết có quầng vàng nhạt viền xung quanh.
+[SEP]
+Mức độ tổn thương ở mức trung bình. Các đốm bệnh xuất hiện riêng lẻ và chưa liên kết thành mảng lớn, tuy nhiên sự chuyển vàng diện rộng của lá cho thấy sự suy giảm khả năng quang hợp.
+[SEP]
+Khuyến nghị bón phân cân đối, đặc biệt bổ sung Kali, Lân và phân vi lượng để tăng sức đề kháng cho cây lúa. Giữ mực nước ruộng ổn định và xem xét phun các loại thuốc trị nấm chứa hoạt chất như Difenoconazole, Propiconazole nếu bệnh có xu hướng lan rộng.
+[SEP]
+Bệnh đốm nâu (Brown Spot) thường xuất hiện trên những chân ruộng thiếu dinh dưỡng, đất nghèo hoặc đất phèn. Cần cải tạo đất và quản lý phân bón tốt hơn trong các vụ sau.
+[SEP]
+Xuất hiện các vết đốm màu nâu nhỏ, hình tròn hoặc bầu dục trên phiến lá.
+[SEP]
+Phiến lá bị mất màu xanh, chuyển sang màu vàng nhạt (vàng hóa).
+[SEP]
+Vết bệnh có tâm màu nâu đậm tối, viền vết bệnh có quầng vàng nhẹ.
+[SEP]
+Phân tích hình thái cho thấy các đốm bệnh phân bố không đều dọc theo chiều dài của phiến lá.
+[SEP]
+Màu sắc lá lúa nhạt màu rõ rệt so với lá khỏe mạnh, biểu hiện của tình trạng stress dinh dưỡng hoặc bị nấm bệnh tấn công gây suy thoái diệp lục.
+[SEP]
+Kích thước các vết đốm khoảng 1-3mm, đây là triệu chứng điển hình của nấm Bipolaris oryzae gây bệnh đốm nâu.",True
+20,1,dataset\raw\BrownSpot\IMG_20190420_194552.jpg,BrownSpot,0,LeafBlast,3,"Lá lúa đang trong tình trạng suy yếu, mất diệp lục và có dấu hiệu nhiễm bệnh giai đoạn đầu.
+[SEP]
+Màu sắc lá chuyển từ xanh sang vàng nhạt, có các vết chấm nâu nhỏ rải rác trên bề mặt lá.
+[SEP]
+Mức độ tổn thương đang ở giai đoạn khởi phát, nếu không can thiệp kịp thời sẽ dẫn đến cháy lá và giảm quang hợp.
+[SEP]
+Cần kiểm tra lại chế độ phân bón, tránh thừa đạm, bón bổ sung kali và sử dụng thuốc trừ nấm gốc đồng hoặc các loại thuốc đặc trị đốm nâu theo hướng dẫn.
+[SEP]
+Bệnh đốm nâu thường phát triển mạnh trên đất nghèo dinh dưỡng hoặc khi cây bị stress, cần quản lý tốt nguồn nước và độ ẩm.
+[SEP]
+Xuất hiện các đốm nhỏ màu nâu rải rác trên lá
+[SEP]
+Lá bị mất màu xanh tự nhiên, chuyển sang vàng úa
+[SEP]
+Dấu hiệu suy kiệt mô lá sớm
+[SEP]
+Bề mặt lá bị ố vàng diện rộng dọc theo các gân lá
+[SEP]
+Các vết đốm nâu bắt đầu hình thành tại các điểm nhiễm bệnh
+[SEP]
+Cấu trúc lá có dấu hiệu suy giảm sức sống rõ rệt",True
+20,2,dataset\raw\BrownSpot\IMG_20190420_195136.jpg,BrownSpot,0,LeafBlast,3,"Lá lúa xuất hiện một vài đốm nâu nhỏ, hình tròn hoặc bầu dục, ban đầu có màu nâu nhạt và có thể phát triển thành màu nâu sẫm hơn hoặc đen khi bệnh tiến triển.
+[SEP]
+Các đốm có viền rõ rệt, đôi khi có quầng vàng bao quanh.
+[SEP]
+Mức độ tổn thương hiện tại trên lá lúa còn nhẹ, với số lượng đốm ít và kích thước nhỏ.
+[SEP]
+Khuyến nghị bà con nông dân thăm đồng thường xuyên, phát hiện sớm và xử lý kịp thời bằng các loại thuốc trừ nấm đặc hiệu theo hướng dẫn của cán bộ khuyến nông. Nên ngắt bỏ lá bị bệnh nặng để tránh lây lan.
+[SEP]
+Bệnh đốm nâu (Brown Spot) thường gây hại vào giai đoạn lúa làm đòng - trỗ và giai đoạn sau thu hoạch, ảnh hưởng đến năng suất và chất lượng hạt.
+[SEP]
+Xuất hiện đốm nhỏ màu nâu trên lá lúa.
+[SEP]
+Các đốm có hình dạng tròn hoặc bầu dục.
+[SEP]
+Có thể thấy viền rõ rệt và quầng vàng xung quanh đốm bệnh.
+[SEP]
+Cận cảnh lá lúa cho thấy các đốm bệnh có kích thước không đồng đều.
+[SEP]
+Màu sắc của đốm bệnh dao động từ nâu nhạt đến nâu sẫm.
+[SEP]
+Không quan sát thấy các triệu chứng khác rõ ràng như bạc lá, cháy lá trên các phần lá được chụp.",True
+27,8,dataset\raw\BrownSpot\IMG_20190420_191238.jpg,BrownSpot,0,LeafBlast,3,"Lá lúa xuất hiện các đốm nhỏ rải rác, có xu hướng phát triển thành các vết bệnh hình bầu dục hoặc hình tròn.
+[SEP]
+Màu sắc chuyển từ xanh sang vàng nhạt xung quanh vết đốm, cho thấy mô lá đang bị hoại tử do nấm tấn công.
+[SEP]
+Mức độ tổn thương ở giai đoạn khởi phát, vết bệnh còn nhỏ và chưa lan rộng toàn bộ phiến lá.
+[SEP]
+Cần kiểm tra lại chế độ dinh dưỡng (đặc biệt là thiếu Kali), quản lý nguồn nước và phun thuốc trừ nấm gốc Propiconazole hoặc Azoxystrobin.
+[SEP]
+Bệnh đốm nâu thường phát triển mạnh trên đất nghèo dinh dưỡng hoặc khi cây lúa bị stress, cần theo dõi thêm để tránh lây lan.
+[SEP]
+Vết bệnh hình tròn hoặc bầu dục nhỏ màu nâu
+[SEP]
+Vòng vàng bao quanh vết đốm (vàng lá)
+[SEP]
+Các đốm rải rác trên bề mặt lá
+[SEP]
+Vết bệnh có tâm màu nâu tối đặc trưng của BrownSpot
+[SEP]
+Có sự hiện diện của quầng vàng (halo) xung quanh các đốm bệnh
+[SEP]
+Sự phân bố vết bệnh không đồng đều, mang đặc điểm của nấm bệnh Bipolaris oryzae",True

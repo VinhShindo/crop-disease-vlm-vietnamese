@@ -1,83 +1,132 @@
-# Báo cáo EDA bộ dữ liệu bệnh lá lúa
 
-## 1. Tổng quan bộ dữ liệu
+# MULTIMODAL EDA REPORT
 
-- Tổng số ảnh: **3.355**
-- Số lớp: **4**
-  - `Healthy`: 1.488 ảnh
-  - `LeafBlast`: 779 ảnh
-  - `Hispa`: 565 ảnh
-  - `BrownSpot`: 523 ảnh
+# 1. Dataset Overview
 
-## 2. Thống kê metadata chính
+Total Classes: 4
 
-- Trung bình mỗi ảnh có **5 câu mô tả** (`texts`).
-- Độ dài văn bản trung bình: **118 từ/ảnh**.
-- Số mẫu văn bản độc nhất: **3.355**.
-- Phân bố `metadata_quality`:
-  - `high`: 1.239
-  - `medium`: 1.464
-  - `low`: 652
-- Phân bố `severity`:
-  - `none`: 1.488
-  - `moderate`: 941
-  - `mild`: 525
-  - `severe`: 401
+Total Images: 3355
 
-## 3. Phân tích ảnh
+Classes:
+- BrownSpot
+- Healthy
+- Hispa
+- LeafBlast
 
-### 3.1 Phân bố lớp
+---
 
-Bộ dữ liệu mất cân bằng rõ rệt:
-- `Healthy`: 44,4%
-- `LeafBlast`: 23,2%
-- `Hispa`: 16,8%
-- `BrownSpot`: 15,6%
+# 2. Image Analysis
 
-### 3.2 Đặc điểm hình ảnh
+Average Resolution:
+- Width: 2049
+- Height: 2049
 
-- `outputs/visualizations/class_visual_collage.png` cho thấy ảnh chủ yếu là close-up trên nền trắng.
-- Ảnh có độ phân giải cao, ít nhiễu nhưng thiếu đa dạng bối cảnh thực địa.
-- `lesion_area_ratio` trung bình khoảng **0,015**, nghĩa là vùng bệnh thường nhỏ và tinh vi.
+Image Quality:
+- No corrupted image detected.
 
-## 4. Phân tích văn bản
+Observations:
+- Dataset contains real rice leaf disease images.
+- Image conditions vary in lighting and orientation.
+- Dataset suitable for deep learning classification tasks.
 
-### 4.1 Độ dài và cấu trúc
+---
 
-- Độ dài văn bản nằm trong khoảng **59–536 từ/ảnh**.
-- Phần lớn văn bản tập trung quanh **100–120 từ**.
-- `outputs/visualizations/text_length_distribution.png` xác nhận phần lớn mô tả có độ dài vừa phải.
+# 3. Text Metadata Analysis
 
-### 4.2 Đa dạng nội dung
+Total Metadata Samples:
+3355
 
-- Mỗi ảnh có trung bình 5 câu mô tả.
-- Văn bản chứa thông tin triệu chứng và phân tích trực quan.
-- Nhiều đoạn mô tả vẫn tuân theo khuôn mẫu chuyên môn, gây rủi ro học theo mẫu ngôn ngữ.
+Average Texts Per Image:
+5.0
 
-## 5. Rủi ro dữ liệu
+Average Text Length:
+23.63 words
 
-- Mất cân bằng lớp: `Healthy` chiếm tỷ trọng lớn.
-- Thiếu đa dạng nền ảnh: phần lớn ảnh nền trắng.
-- Tổn thương nhỏ và lesion ratio thấp.
-- Metadata chất lượng thấp chiếm gần 20% tổng dữ liệu.
+Observations:
+- Vietnamese disease descriptions successfully generated.
+- Multiple descriptions per image improve multimodal learning.
+- Text descriptions contain symptom-level semantic information.
+- Dataset suitable for Vision-Language training.
 
-## 6. Khả năng đa phương thức
+---
 
-- Dữ liệu phù hợp cho học đa phương thức nhờ ảnh và văn bản liên kết.
-- Trường thông tin thời tiết và giai đoạn sinh trưởng hỗ trợ phân tích điều kiện môi trường.
-- Tuy nhiên, dạng ảnh đồng nhất và văn bản khuôn mẫu hạn chế tính khái quát.
+# 4. Dataset Challenges
 
-## 7. Quan sát từ visualizations
+- Class imbalance exists.
+- Healthy class contains more samples.
+- Some disease classes have fewer images.
+- Augmentation recommended during training.
 
-- `class_distribution.png` khẳng định mất cân bằng lớp.
-- `class_visual_collage.png` xác nhận ảnh close-up nền trắng.
-- `text_length_distribution.png` cho thấy độ dài văn bản phù hợp.
-- `image_text_pairs.png` minh chứng dữ liệu ảnh–văn bản liên kết.
+---
 
-## 8. Kết luận
+# 5. Recommended Training Strategy
 
-Bộ dữ liệu phù hợp cho nghiên cứu phân loại bệnh lá lúa và thử nghiệm học đa phương thức tiếng Việt. Tuy nhiên, để đạt chất lượng báo cáo luận văn hoặc đề tài tốt nghiệp, cần:
-- bổ sung ảnh thực địa nền phức hợp,
-- xử lý mất cân bằng lớp,
-- ưu tiên đánh giá trên subset chất lượng cao,
-- thiết kế thêm thử nghiệm đối chiếu khi sử dụng metadata bệnh lý.
+Recommended Image Encoder:
+- EfficientNet-B0
+
+Recommended Text Encoder:
+- PhoBERT
+
+Fusion Strategy:
+- Cross Attention
+- Feature Concatenation
+
+Main Evaluation Metric:
+- F1-score
+
+---
+
+# 6. Advanced AI Visualizations
+
+## Visualizations
+
+- class_distribution.png
+- class_ratio_pie.png
+- class_visual_collage.png
+- dataset_overview.png
+- image_resolution_distribution.png
+- text_length_distribution.png
+- texts_per_image_distribution.png
+- word_frequency.png
+- image_text_pairs.png
+
+## Analysis
+
+- dataset_statistics.csv
+- text_statistics.csv
+- corrupted_images.csv
+
+## Embedding Analysis
+
+- tsne_embeddings.png
+
+## AI Dashboard
+
+- research_dashboard.png
+
+## Semantic Embedding Analysis
+
+- tsne_embeddings.png
+
+The embedding visualization provides a semantic overview
+of inter-class visual similarity within the dataset.
+
+The observed overlap between several classes indicates:
+- subtle symptom differences
+- potential semantic ambiguity
+- need for stronger multimodal fusion
+- necessity of robust feature learning
+
+---
+
+# 7. Conclusion
+
+The dataset is suitable for:
+
+- Rice leaf disease classification
+- Vision-Language learning
+- Vietnamese agricultural AI research
+- Multimodal deep learning experiments
+
+The generated Vietnamese metadata increases
+the research novelty of the project.

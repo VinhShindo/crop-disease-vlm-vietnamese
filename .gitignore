@@ -29,10 +29,13 @@ outputs/predictions/
 Thumbs.db
 
 dataset/raw
-dataset/processed
+dataset/splits
 dataset/text_metadata
+dataset/metadata
 
 pipeline.md
 
 src/datasets/EDA/check_gen_text.py
 src/datasets/EDA/edit_text_data.py
+
+SLIDE_REPORT.md

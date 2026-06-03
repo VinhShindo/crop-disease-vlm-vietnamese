@@ -1,0 +1,25 @@
+﻿Category,Parameter,Value
+CONFIGURATION,Model Architecture,EfficientNet-B0 + PhoBERT + CROSS_ATTENTION
+CONFIGURATION,Total Parameters,"144,529,728"
+CONFIGURATION,Train/Val/Test Split,"train.json, val.json, test.json"
+CONFIGURATION,Batch Size / Learning Rate,16 / 0.0001
+CONFIGURATION,Image Size / Max Length,224 / 128
+CONFIGURATION,Training Date,2026-06-02 13:12:22
+TRAINING_EPOCH_1,Train Loss / Train Acc / Train F1,0.4472 / 0.8335 / 0.7948
+TRAINING_EPOCH_1,Val Loss / Val Acc / Val F1,0.1182 / 0.9642 / 0.9566
+TRAINING_EPOCH_2,Train Loss / Train Acc / Train F1,0.0844 / 0.9800 / 0.9758
+TRAINING_EPOCH_2,Val Loss / Val Acc / Val F1,0.1354 / 0.9602 / 0.9467
+TRAINING_EPOCH_3,Train Loss / Train Acc / Train F1,0.0306 / 0.9923 / 0.9906
+TRAINING_EPOCH_3,Val Loss / Val Acc / Val F1,0.1069 / 0.9761 / 0.9679
+TRAINING_EPOCH_4,Train Loss / Train Acc / Train F1,0.0581 / 0.9872 / 0.9849
+TRAINING_EPOCH_4,Val Loss / Val Acc / Val F1,0.1374 / 0.9622 / 0.9465
+BEST_EPOCH,Epoch 3,Best Validation F1: 0.9679
+TEST_RESULTS,Accuracy,0.9861
+TEST_RESULTS,Precision (macro),0.9849
+TEST_RESULTS,Recall (macro),0.9776
+TEST_RESULTS,F1 Score (macro),0.9806
+TEST_RESULTS,F1 Score (weighted),0.9859
+CLASS_BROWNSPOT,Precision / Recall / F1 / Support,1.0000 / 0.9103 / 0.9530 / 78
+CLASS_HEALTHY,Precision / Recall / F1 / Support,0.9956 / 1.0000 / 0.9978 / 224
+CLASS_HISPA,Precision / Recall / F1 / Support,0.9770 / 1.0000 / 0.9884 / 85
+CLASS_LEAFBLAST,Precision / Recall / F1 / Support,0.9669 / 1.0000 / 0.9832 / 117

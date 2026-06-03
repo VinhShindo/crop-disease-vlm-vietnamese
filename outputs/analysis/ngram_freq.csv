@@ -1,0 +1,121 @@
+class,ngram,count
+BrownSpot,bệnh,3064
+BrownSpot,lá,2507
+BrownSpot,vết,1884
+BrownSpot,đốm,1811
+BrownSpot,nâu,1711
+BrownSpot,vết bệnh,1609
+BrownSpot,các,1588
+BrownSpot,có,1550
+BrownSpot,màu,1414
+BrownSpot,hoặc,1123
+BrownSpot,của,1102
+BrownSpot,hiện,1085
+BrownSpot,vàng,1025
+BrownSpot,hình,939
+BrownSpot,nấm,853
+BrownSpot,độ,844
+BrownSpot,và,805
+BrownSpot,trên,777
+BrownSpot,đốm nâu,738
+BrownSpot,đặc,734
+BrownSpot,màu nâu,695
+BrownSpot,các đốm,694
+BrownSpot,nhỏ,694
+BrownSpot,quanh,634
+BrownSpot,xuất,631
+BrownSpot,phân,618
+BrownSpot,xuất hiện,617
+BrownSpot,lúa,612
+BrownSpot,bệnh đốm,559
+BrownSpot,phát,525
+Healthy,lá,9253
+Healthy,không,7552
+Healthy,có,6051
+Healthy,không có,4602
+Healthy,màu,3016
+Healthy,bệnh,2594
+Healthy,hay,2371
+Healthy,thường,2282
+Healthy,vết,2201
+Healthy,xanh,2088
+Healthy,độ,2040
+Healthy,sắc,1940
+Healthy,hiện,1926
+Healthy,và,1774
+Healthy,lúa,1772
+Healthy,dấu,1753
+Healthy,khỏe,1749
+Healthy,hiệu,1727
+Healthy,của,1722
+Healthy,các,1721
+Healthy,màu sắc,1716
+Healthy,dấu hiệu,1699
+Healthy,mặt,1698
+Healthy,bề mặt,1685
+Healthy,bề,1685
+Healthy,đốm,1659
+Healthy,đồng,1643
+Healthy,hoặc,1594
+Healthy,bình,1429
+Healthy,cấu,1424
+Hispa,lá,4305
+Hispa,các,2564
+Hispa,sâu,2122
+Hispa,vết,1824
+Hispa,bị,1449
+Hispa,theo,1293
+Hispa,trắng,1252
+Hispa,của,1210
+Hispa,thương,1178
+Hispa,hoặc,1098
+Hispa,các vết,1092
+Hispa,dọc,1085
+Hispa,hiện,1071
+Hispa,độ,1018
+Hispa,tổn,978
+Hispa,có,973
+Hispa,tổn thương,972
+Hispa,màu,964
+Hispa,dọc theo,867
+Hispa,gân,795
+Hispa,ăn,776
+Hispa,gân lá,773
+Hispa,sọc,762
+Hispa,hispa,755
+Hispa,hại,750
+Hispa,mất,698
+Hispa,trên,634
+Hispa,đặc,629
+Hispa,xuất,627
+Hispa,xuất hiện,627
+LeafBlast,bệnh,5419
+LeafBlast,vết,3982
+LeafBlast,vết bệnh,3616
+LeafBlast,lá,3466
+LeafBlast,hình,2230
+LeafBlast,có,2217
+LeafBlast,màu,2130
+LeafBlast,các,1802
+LeafBlast,của,1563
+LeafBlast,hoặc,1547
+LeafBlast,hiện,1519
+LeafBlast,đặc,1404
+LeafBlast,đạo,1299
+LeafBlast,đạo ôn,1281
+LeafBlast,ôn,1281
+LeafBlast,nâu,1268
+LeafBlast,độ,1234
+LeafBlast,và,1167
+LeafBlast,tâm,993
+LeafBlast,đoạn,951
+LeafBlast,giai,942
+LeafBlast,giai đoạn,942
+LeafBlast,xuất,917
+LeafBlast,phát,906
+LeafBlast,xuất hiện,903
+LeafBlast,vàng,898
+LeafBlast,thoi,876
+LeafBlast,xám,863
+LeafBlast,trên,844
+LeafBlast,nhạt,843

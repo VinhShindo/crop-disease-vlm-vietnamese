@@ -1,0 +1,10 @@
+              precision    recall  f1-score   support
+
+   BrownSpot     1.0000    0.9103    0.9530        78
+     Healthy     0.9956    1.0000    0.9978       224
+       Hispa     0.9770    1.0000    0.9884        85
+   LeafBlast     0.9669    1.0000    0.9832       117
+
+    accuracy                         0.9861       504
+   macro avg     0.9849    0.9776    0.9806       504
+weighted avg     0.9865    0.9861    0.9859       504

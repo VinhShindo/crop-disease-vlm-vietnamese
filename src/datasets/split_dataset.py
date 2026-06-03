@@ -3,7 +3,6 @@ import csv
 from pathlib import Path
 import pandas as pd
 from sklearn.model_selection import train_test_split
-import argparse
 
 
 def load_metadata(metadata_path):
@@ -40,14 +39,6 @@ def save_csv(data, path):
 def split_dataset(metadata_path, output_dir, train_ratio=0.7, val_ratio=0.15, test_ratio=0.15, random_state=42):
     """
     Split dataset thành train/val/test
-    
-    Args:
-        metadata_path: Path to JSON/CSV file
-        output_dir: Output directory
-        train_ratio: Train ratio (default: 0.7)
-        val_ratio: Validation ratio (default: 0.15)
-        test_ratio: Test ratio (default: 0.15)
-        random_state: Random seed
     """
     assert abs(train_ratio + val_ratio + test_ratio - 1.0) < 1e-6, "Ratios must sum to 1"
     
@@ -114,26 +105,25 @@ def split_dataset(metadata_path, output_dir, train_ratio=0.7, val_ratio=0.15, te
     return train_data, val_data, test_data
 
 
-def main():
-    parser = argparse.ArgumentParser(description="Split dataset into train/val/test")
-    parser.add_argument("--metadata", type=str, required=True, help="Path to metadata file (JSON or CSV)")
-    parser.add_argument("--output", type=str, default="dataset/splits", help="Output directory")
-    parser.add_argument("--train_ratio", type=float, default=0.7, help="Train ratio")
-    parser.add_argument("--val_ratio", type=float, default=0.15, help="Validation ratio")
-    parser.add_argument("--test_ratio", type=float, default=0.15, help="Test ratio")
-    parser.add_argument("--seed", type=int, default=42, help="Random seed")
-    
-    args = parser.parse_args()
-    
-    split_dataset(
-        metadata_path=args.metadata,
-        output_dir=args.output,
-        train_ratio=args.train_ratio,
-        val_ratio=args.val_ratio,
-        test_ratio=args.test_ratio,
-        random_state=args.seed
-    )
-
-
 if __name__ == "__main__":
-    main()
+    # =========================================================================
+    # CẤU HÌNH TRỰC TIẾP TẠI ĐÂY
+    # =========================================================================
+    METADATA_PATH = "dataset/metadata/all_metadata.json"  # Thay bằng đường dẫn file JSON hoặc CSV của bạn
+    OUTPUT_DIR = "dataset/splits"        # Thư mục lưu kết quả sau khi split
+    
+    TRAIN_RATIO = 0.7
+    VAL_RATIO = 0.15
+    TEST_RATIO = 0.15
+    SEED = 42
+    # =========================================================================
+
+    # Chạy hàm split dataset với cấu hình trên
+    split_dataset(
+        metadata_path=METADATA_PATH,
+        output_dir=OUTPUT_DIR,
+        train_ratio=TRAIN_RATIO,
+        val_ratio=VAL_RATIO,
+        test_ratio=TEST_RATIO,
+        random_state=SEED
+    )

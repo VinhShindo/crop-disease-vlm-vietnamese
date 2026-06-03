@@ -1,0 +1,26 @@
+﻿Parameter,Value
+project_name,rice_disease_multimodal
+model.image_encoder,efficientnet_b0
+model.text_encoder,phobert
+model.num_classes,4
+model.fusion,cross_attention
+dataset.num_classes,4
+dataset.classes,"['BrownSpot', 'Healthy', 'Hispa', 'LeafBlast']"
+data.train_metadata,dataset/splits/train.json
+data.val_metadata,dataset/splits/val.json
+data.test_metadata,dataset/splits/test.json
+data.image_size,224
+data.max_length,128
+data.num_workers,4
+training.seed,42
+training.batch_size,16
+training.epochs,30
+training.lr,0.0001
+training.weight_decay,0.0001
+training.grad_clip_norm,1.0
+training.patience,4
+evaluation.metrics,"['accuracy', 'precision', 'recall', 'f1_score']"
+outputs.checkpoints,outputs/checkpoints
+outputs.figures,outputs/figures
+outputs.metrics,outputs/metrics
+outputs.logs,outputs/logs

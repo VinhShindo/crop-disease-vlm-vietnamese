@@ -18,7 +18,7 @@ class Trainer:
         scheduler,
         device,
         save_path,
-        logger=None,  # Thêm logger
+        logger=None,
         patience=4,
         grad_clip_norm=1.0,
         use_amp=True,
@@ -36,10 +36,9 @@ class Trainer:
         self.patience = patience
         self.grad_clip_norm = grad_clip_norm
         self.use_amp = use_amp and torch.cuda.is_available()
-        self.scaler = torch.cuda.amp.GradScaler() if self.use_amp else None
+        self.scaler = torch.amp.GradScaler('cuda') if self.use_amp else None
         self.early_stop_counter = 0
         
-        # Lưu lịch sử để vẽ biểu đồ
         self.train_losses = []
         self.val_losses = []
         self.train_f1s = []
@@ -59,11 +58,24 @@ class Trainer:
             input_ids = batch["input_ids"].to(self.device)
             attention_mask = batch["attention_mask"].to(self.device)
             labels = batch["label"].to(self.device)
+            
+            # Xử lý metadata
+            metadata = batch.get("metadata")
+            if metadata is not None:
+                if isinstance(metadata, dict):
+                    # Nếu metadata vẫn là dict, bỏ qua
+                    metadata = None
+                else:
+                    metadata = metadata.to(self.device)
 
             self.optimizer.zero_grad()
 
-            with torch.cuda.amp.autocast(enabled=self.use_amp):
-                outputs = self.model(images, input_ids, attention_mask)
+            if self.use_amp:
+                with torch.amp.autocast('cuda'):
+                    outputs = self.model(images, input_ids, attention_mask, metadata_features=metadata)
+                    loss = self.criterion(outputs, labels)
+            else:
+                outputs = self.model(images, input_ids, attention_mask, metadata_features=metadata)
                 loss = self.criterion(outputs, labels)
 
             if self.scaler is not None:
@@ -88,7 +100,6 @@ class Trainer:
         metrics = calculate_metrics(y_true, y_pred)
         avg_loss = running_loss / len(self.train_loader)
         
-        # Log chi tiết
         self.logger.info(f"Train Loss: {avg_loss:.4f}, Train Acc: {metrics['accuracy']:.4f}, Train F1: {metrics['f1']:.4f}")
         
         return avg_loss, metrics
@@ -105,8 +116,15 @@ class Trainer:
             input_ids = batch["input_ids"].to(self.device)
             attention_mask = batch["attention_mask"].to(self.device)
             labels = batch["label"].to(self.device)
+            
+            metadata = batch.get("metadata")
+            if metadata is not None:
+                if isinstance(metadata, dict):
+                    metadata = None
+                else:
+                    metadata = metadata.to(self.device)
 
-            outputs = self.model(images, input_ids, attention_mask)
+            outputs = self.model(images, input_ids, attention_mask, metadata_features=metadata)
             loss = self.criterion(outputs, labels)
 
             running_loss += loss.item()
@@ -117,17 +135,14 @@ class Trainer:
         metrics = calculate_metrics(y_true, y_pred)
         avg_loss = running_loss / len(self.val_loader)
         
-        # Log chi tiết
         self.logger.info(f"Val Loss: {avg_loss:.4f}, Val Acc: {metrics['accuracy']:.4f}, Val F1: {metrics['f1']:.4f}")
         
         return avg_loss, metrics
 
     def save_best_model(self, f1_score, epoch):
-        """Save full checkpoint"""
         if f1_score > self.best_f1:
             self.best_f1 = f1_score
             
-            # Save full checkpoint
             checkpoint = {
                 'epoch': epoch,
                 'model_state_dict': self.model.state_dict(),
@@ -136,8 +151,6 @@ class Trainer:
                 'best_f1': self.best_f1,
             }
             torch.save(checkpoint, self.save_path.parent / "full_checkpoint.pth")
-            
-            # Save only model weights for inference
             torch.save(self.model.state_dict(), self.save_path)
             
             self.logger.info(f"\n✓ Best model saved! (F1={f1_score:.4f})")
@@ -155,17 +168,12 @@ class Trainer:
             self.logger.info(f"Epoch {epoch + 1}/{epochs}")
             self.logger.info(f"{'='*40}")
             
-            # Train
             train_loss, train_metrics = self.train_epoch()
-            
-            # Validate
             val_loss, val_metrics = self.validate()
             
-            # Update scheduler
             if self.scheduler is not None:
                 self.scheduler.step()
             
-            # Save history
             self.train_losses.append(train_loss)
             self.val_losses.append(val_loss)
             self.train_f1s.append(train_metrics['f1'])
@@ -173,16 +181,13 @@ class Trainer:
             self.train_accs.append(train_metrics['accuracy'])
             self.val_accs.append(val_metrics['accuracy'])
             
-            # Save best model
             self.save_best_model(val_metrics["f1"], epoch + 1)
             
-            # Early stopping
             if val_metrics["f1"] > self.best_f1:
                 self.early_stop_counter = 0
             else:
                 self.early_stop_counter += 1
             
-            # Print epoch summary
             self.logger.info(f"\n📊 Epoch {epoch + 1} Summary:")
             self.logger.info(f"  Train Loss: {train_loss:.4f} | Train Acc: {train_metrics['accuracy']:.4f} | Train F1: {train_metrics['f1']:.4f}")
             self.logger.info(f"  Val Loss:   {val_loss:.4f} | Val Acc:   {val_metrics['accuracy']:.4f} | Val F1:   {val_metrics['f1']:.4f}")

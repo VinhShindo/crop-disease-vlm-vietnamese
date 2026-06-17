@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ config.ui.title if config and config.ui and config.ui.title else 'PlanCare AI' }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.css">
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand" onclick="showTab('predict')" style="cursor:pointer;">
+                <div class="brand-icon">🌱</div>
+                <span class="brand-name">PlanCare<span class="brand-highlight">AI</span></span>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-link active" data-tab="predict">Analysis</a>
+                <a href="#" class="nav-link" data-tab="review">Model Review</a>
+                <a href="#" class="nav-link" data-tab="dataset">Dataset</a>
+                <a href="#" class="nav-link" data-tab="about">About</a>
+            </div>
+            <div class="nav-actions">
+                <span class="status-badge" id="status-badge">
+                    <span class="status-dot offline"></span>
+                    <span class="status-text">Offline</span>
+                </span>
+                <button class="btn-load" id="btn-load-model">
+                    <span class="btn-load-icon">⚡</span>
+                    <span class="btn-load-text">Load Model</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2024 PlanCare AI — Intelligent Crop Disease Detection</p>
+            <p class="footer-version">v2.0 · Made with ❤️</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Tab switching
+        function showTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+            
+            // Show selected tab
+            const activeTab = document.getElementById(tabId);
+            if (activeTab) {
+                activeTab.style.display = 'block';
+                activeTab.style.animation = 'fadeUp 0.6s ease forwards';
+            }
+            
+            // Update nav links
+            document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+            const activeLink = document.querySelector(`.nav-link[data-tab="${tabId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
+            // Scroll to top of content
+            document.querySelector('.main-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Nav links click handler
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const tabId = this.getAttribute('data-tab');
+                showTab(tabId);
+            });
+        });
+
+        // Model status update
+        function updateModelStatus(loaded) {
+            const badge = document.getElementById('status-badge');
+            const dot = badge.querySelector('.status-dot');
+            const text = badge.querySelector('.status-text');
+            if (loaded) {
+                dot.className = 'status-dot online';
+                text.textContent = 'Online';
+            } else {
+                dot.className = 'status-dot offline';
+                text.textContent = 'Offline';
+            }
+        }
+
+        async function checkModelStatus() {
+            try {
+                const res = await fetch('/api/model_status');
+                const data = await res.json();
+                updateModelStatus(data.loaded);
+                const btn = document.getElementById('btn-load-model');
+                if (data.loaded) {
+                    btn.innerHTML = '<span class="btn-load-icon">✅</span><span class="btn-load-text">Model Ready</span>';
+                    btn.style.background = 'rgba(16, 185, 129, 0.15)';
+                    btn.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+                } else {
+                    btn.innerHTML = '<span class="btn-load-icon">⚡</span><span class="btn-load-text">Load Model</span>';
+                    btn.style.background = 'rgba(212, 160, 86, 0.15)';
+                    btn.style.borderColor = 'rgba(212, 160, 86, 0.3)';
+                }
+            } catch (err) {
+                console.error('Error checking model status:', err);
+            }
+        }
+
+        document.getElementById('btn-load-model').addEventListener('click', async function() {
+            const btn = this;
+            btn.innerHTML = '<span class="btn-load-icon">⏳</span><span class="btn-load-text">Loading...</span>';
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/load_model', { method: 'POST' });
+                const data = await res.json();
+                if (data.status === 'success') {
+                    await checkModelStatus();
+                }
+            } catch (err) {
+                console.error('Error loading model:', err);
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // Check status on load
+        checkModelStatus();
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>

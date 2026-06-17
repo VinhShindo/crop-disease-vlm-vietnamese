@@ -4,6 +4,7 @@ model.image_encoder,efficientnet_b0
 model.text_encoder,phobert
 model.num_classes,4
 model.fusion,cross_attention
+text_tokenizer,vinai/phobert-base
 dataset.num_classes,4
 dataset.classes,"['BrownSpot', 'Healthy', 'Hispa', 'LeafBlast']"
 data.train_metadata,dataset/splits/train.json
@@ -13,14 +14,37 @@ data.image_size,224
 data.max_length,128
 data.num_workers,4
 training.seed,42
-training.batch_size,16
-training.epochs,30
+training.batch_size,32
+training.epochs,25
 training.lr,0.0001
-training.weight_decay,0.0001
-training.grad_clip_norm,1.0
-training.patience,4
+training.weight_decay,0.0005
+training.grad_clip_norm,0.5
+training.patience,6
+training.warmup_epochs,3
+training.min_lr,1e-6
+training.label_smoothing,0.05
+training.use_amp,True
 evaluation.metrics,"['accuracy', 'precision', 'recall', 'f1_score']"
 outputs.checkpoints,outputs/checkpoints
 outputs.figures,outputs/figures
 outputs.metrics,outputs/metrics
 outputs.logs,outputs/logs
+inference.device,cuda
+inference.checkpoint,outputs/checkpoints/best_model.pth
+inference.gradcam,True
+inference.max_text_length,128
+gemini.enabled,True
+gemini.model_id,gemini-flash-lite-latest
+gemini.endpoint,
+gemini.model,gemini
+gemini.timeout_seconds,10
+ui.title,Crop Disease VLM - Dashboard
+ui.subtitle,Rice disease detection and analysis
+ui.primary_color,#2b6cb0
+ui.accent_color,#68d391
+ui.max_display_figures,8
+ui.show_training_summary,True
+ui.show_gradcam_in_review,True
+leaf_attention.use_leaf_mask,True
+leaf_attention.attention_weight,0.15
+leaf_attention.min_coverage_threshold,0.05

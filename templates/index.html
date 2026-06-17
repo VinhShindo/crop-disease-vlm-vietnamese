@@ -1,0 +1,876 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-container">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                AI-Powered Rice Disease Analysis
+            </div>
+            <h1 class="hero-title">
+                Intelligent Crop Disease<br>
+                <span class="hero-highlight">Detection Platform</span>
+            </h1>
+            <p class="hero-subtitle">
+                Multimodal AI system combining computer vision, PhoBERT NLP, 
+                Cross-Attention and Explainable AI for accurate rice disease diagnosis.
+            </p>
+            <div class="hero-actions">
+                <button class="btn-primary" onclick="showTab('predict')">
+                    <span>Start Analysis</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                <button class="btn-secondary" onclick="showTab('review')">
+                    View Model Metrics
+                </button>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-card">
+                <div class="hero-stat">
+                    <div class="stat-number">99.4%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="stat-number">99.35%</div>
+                    <div class="stat-label">F1 Score</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Disease Classes</div>
+                </div>
+                <div class="hero-pulse"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Predict Tab -->
+<div id="predict" class="tab-content" style="display:block;">
+    <section class="analysis-section animate-on-scroll">
+        <div class="section-header">
+            <h2>Upload Leaf Image</h2>
+            <p class="section-subtitle">Upload an image of the rice leaf and describe symptoms for diagnosis</p>
+        </div>
+
+        <div class="analysis-grid">
+            <!-- Upload Card -->
+            <div class="upload-card glass-card">
+                <form id="predict-form" novalidate>
+                    <div class="upload-area" id="upload-area">
+                        <input type="file" name="image" accept="image/*" id="image-input" style="display:none;">
+                        <div class="upload-placeholder" id="upload-placeholder">
+                            <div class="upload-icon-wrapper">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="17 8 12 3 7 8"/>
+                                    <line x1="12" y1="3" x2="12" y2="15"/>
+                                </svg>
+                            </div>
+                            <p class="upload-text">Drop your image here, or <span class="upload-link">browse</span></p>
+                            <small class="upload-hint">Supports JPG, PNG, JPEG</small>
+                        </div>
+                        <img id="preview-image" style="display:none; width:100%; border-radius:16px; margin-top:10px;">
+                    </div>
+                    <div id="upload-error" style="display:none; color: #EF4444; font-size: 14px; margin-top: 8px;">
+                        ⚠️ Vui lòng chọn ảnh để phân tích
+                    </div>
+
+                    <div class="form-group">
+                        <label for="text-input">Symptom Description</label>
+                        <textarea id="text-input" name="text" rows="3" 
+                            placeholder="Describe the symptoms you observe on the rice leaf..." 
+                            class="form-textarea"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-analyze" id="btn-analyze">
+                            <span class="btn-text">Analyze Disease</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Card -->
+            <div class="results-card glass-card" id="predict-result" style="display:none;">
+                <div id="result-content"></div>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="loading-overlay" style="display:none;">
+            <div class="loading-spinner">
+                <div class="spinner-ring"></div>
+                <p>Analyzing with AI...</p>
+            </div>
+        </div>
+
+        <!-- Pipeline Visualization -->
+        <div id="pipeline-container" class="pipeline-section glass-card" style="display:none;">
+            <div class="pipeline-header">
+                <h3>🔄 Pipeline xử lý đa phương thức</h3>
+                <span class="pipeline-status" id="pipeline-status">⏳ Đang xử lý...</span>
+            </div>
+            
+            <div class="pipeline-grid">
+                <!-- Cột trái: Xử lý ảnh -->
+                <div class="pipeline-column">
+                    <div class="pipeline-column-header">
+                        <span class="column-icon">🖼️</span>
+                        <h4>Xử lý ảnh</h4>
+                    </div>
+                    <div class="pipeline-steps" id="image-steps">
+                        <!-- Steps sẽ được render bằng JS -->
+                    </div>
+                    
+                    <div class="pipeline-visuals" id="image-visuals">
+                        <div class="visual-row">
+                            <div class="visual-item">
+                                <div class="visual-label">📷 Ảnh gốc</div>
+                                <img id="pipeline-original-img" src="" alt="Original" class="pipeline-img">
+                            </div>
+                            <div class="visual-item">
+                                <div class="visual-label">🔴 Hull</div>
+                                <img id="pipeline-hull-img" src="" alt="Hull" class="pipeline-img">
+                            </div>
+                            <div class="visual-item">
+                                <div class="visual-label">⚪ Mask</div>
+                                <img id="pipeline-mask-img" src="" alt="Mask" class="pipeline-img">
+                            </div>
+                            <div class="visual-item">
+                                <div class="visual-label">🔥 GradCAM</div>
+                                <img id="pipeline-gradcam-img" src="" alt="GradCAM" class="pipeline-img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Cột phải: Xử lý văn bản -->
+                <div class="pipeline-column">
+                    <div class="pipeline-column-header">
+                        <span class="column-icon">📝</span>
+                        <h4>Xử lý văn bản</h4>
+                    </div>
+                    <div class="pipeline-steps" id="text-steps">
+                        <!-- Steps sẽ được render bằng JS -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Phần Fusion -->
+            <div class="pipeline-fusion">
+                <div class="fusion-header">
+                    <span class="fusion-icon">🔀</span>
+                    <h4>Fusion - Kết hợp đa phương thức</h4>
+                </div>
+                <div class="pipeline-steps" id="fusion-steps">
+                    <!-- Steps sẽ được render bằng JS -->
+                </div>
+                
+                <div class="fusion-result" id="fusion-result">
+                    <div class="result-badge">
+                        <span class="result-label">🎯 Kết quả dự đoán</span>
+                        <span class="result-value" id="final-prediction">-</span>
+                    </div>
+                    <div class="result-probs" id="final-probs">
+                        <!-- Prob bars sẽ được render bằng JS -->
+                    </div>
+                </div>
+
+                <!-- Gemini AI -->
+                <div id="gemini-container" style="display:none; margin-top: 20px;">
+                    <div class="gemini-card">
+                        <div class="gemini-header">
+                            <span class="gemini-icon">🤖</span>
+                            <div>
+                                <h4>Tư vấn từ Gemini AI</h4>
+                                <p class="gemini-subtitle">Phân tích và khuyến nghị cho người nông dân</p>
+                            </div>
+                            <span class="gemini-badge">AI</span>
+                        </div>
+                        <div class="gemini-body">
+                            <div id="gemini-content" class="gemini-content">
+                                <!-- Nội dung từ Gemini -->
+                            </div>
+                            <div id="gemini-loading" class="gemini-loading" style="display:none;">
+                                <div class="gemini-spinner"></div>
+                                <span>Đang tạo lời khuyên từ AI...</span>
+                            </div>
+                        </div>
+                        <div class="gemini-footer">
+                            <span class="gemini-disclaimer">⚠️ Lời khuyên mang tính tham khảo, nên tham vấn chuyên gia nông nghiệp</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Review Tab -->
+<div id="review" class="tab-content" style="display:none;">
+    <section class="review-section animate-on-scroll">
+        <div class="section-header">
+            <h2>Model Performance Analytics</h2>
+            <p class="section-subtitle">Comprehensive evaluation metrics and visualizations</p>
+        </div>
+
+        <div class="metrics-grid-premium">
+            <div class="metric-card-premium glass-card">
+                <div class="metric-icon">🎯</div>
+                <div class="metric-value">{{ metrics.accuracy|round(4) if metrics else '0.9940' }}</div>
+                <div class="metric-label">Accuracy</div>
+                <div class="metric-trend positive">↑ 0.8%</div>
+            </div>
+            <div class="metric-card-premium glass-card">
+                <div class="metric-icon">📊</div>
+                <div class="metric-value">{{ metrics.f1|round(4) if metrics else '0.9935' }}</div>
+                <div class="metric-label">F1 Score</div>
+                <div class="metric-trend positive">↑ 0.6%</div>
+            </div>
+            <div class="metric-card-premium glass-card">
+                <div class="metric-icon">🎯</div>
+                <div class="metric-value">{{ metrics.precision|round(4) if metrics else '0.9946' }}</div>
+                <div class="metric-label">Precision</div>
+                <div class="metric-trend positive">↑ 0.4%</div>
+            </div>
+            <div class="metric-card-premium glass-card">
+                <div class="metric-icon">📈</div>
+                <div class="metric-value">{{ metrics.recall|round(4) if metrics else '0.9925' }}</div>
+                <div class="metric-label">Recall</div>
+                <div class="metric-trend positive">↑ 0.3%</div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="card-header">
+                <h3>📁 Dataset Overview</h3>
+                <span class="badge-premium">3,355 images</span>
+            </div>
+            <div class="stats-grid-premium">
+                <div class="stat-item-premium">
+                    <span class="stat-value-premium">4</span>
+                    <span class="stat-label-premium">Disease Classes</span>
+                </div>
+                <div class="stat-item-premium">
+                    <span class="stat-value-premium">1,488</span>
+                    <span class="stat-label-premium">Healthy</span>
+                </div>
+                <div class="stat-item-premium">
+                    <span class="stat-value-premium">779</span>
+                    <span class="stat-label-premium">Leaf Blast</span>
+                </div>
+                <div class="stat-item-premium">
+                    <span class="stat-value-premium">565</span>
+                    <span class="stat-label-premium">Hispa</span>
+                </div>
+                <div class="stat-item-premium">
+                    <span class="stat-value-premium">523</span>
+                    <span class="stat-label-premium">Brown Spot</span>
+                </div>
+            </div>
+            {% if dataset_overview %}
+                <img src="{{ dataset_overview }}" alt="Dataset Overview" class="dataset-image">
+            {% endif %}
+        </div>
+
+        <div class="visuals-grid-premium">
+            <div class="visual-card glass-card">
+                <h4>Training Curves</h4>
+                <img src="/outputs/figures/training_curves.png" alt="Training Curves">
+            </div>
+            <div class="visual-card glass-card">
+                <h4>Confusion Matrix</h4>
+                <img src="/outputs/figures/confusion_matrix.png" alt="Confusion Matrix">
+            </div>
+            <div class="visual-card glass-card">
+                <h4>t-SNE Visualization</h4>
+                <img src="/outputs/figures/tsne_visualization.png" alt="t-SNE">
+            </div>
+            <div class="visual-card glass-card">
+                <h4>ROC Curves</h4>
+                <img src="/outputs/figures/roc_pr_curves.png" alt="ROC Curves">
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="card-header">
+                <h3>⚙️ Training Configuration</h3>
+            </div>
+            <div class="config-grid-premium">
+                <div class="config-item-premium">
+                    <span class="config-label">Architecture</span>
+                    <span class="config-value">EfficientNet-B0 + PhoBERT + Cross-Attention</span>
+                </div>
+                <div class="config-item-premium">
+                    <span class="config-label">Batch Size</span>
+                    <span class="config-value">{{ config.training.batch_size if config.training else '16' }}</span>
+                </div>
+                <div class="config-item-premium">
+                    <span class="config-label">Learning Rate</span>
+                    <span class="config-value">{{ config.training.lr if config.training else '1e-4' }}</span>
+                </div>
+                <div class="config-item-premium">
+                    <span class="config-label">Epochs</span>
+                    <span class="config-value">{{ config.training.epochs if config.training else '30' }}</span>
+                </div>
+                <div class="config-item-premium">
+                    <span class="config-label">Patience</span>
+                    <span class="config-value">{{ config.training.patience if config.training else '4' }}</span>
+                </div>
+                <div class="config-item-premium">
+                    <span class="config-label">Parameters</span>
+                    <span class="config-value">144.75M</span>
+                </div>
+            </div>
+        </div>
+
+        {% if figures %}
+        <div class="glass-card">
+            <div class="card-header">
+                <h3>🖼️ Additional Visualizations</h3>
+            </div>
+            <div class="visuals-grid-premium">
+                {% for name, path in figures.items() %}
+                    {% if name != 'gradcam_samples' %}
+                    <div class="visual-card glass-card">
+                        <h4>{{ name.replace('_', ' ').replace('.png', '').title() }}</h4>
+                        <img src="{{ path }}" alt="{{ name }}" loading="lazy">
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </section>
+</div>
+
+<!-- Dataset Tab -->
+<div id="dataset" class="tab-content" style="display:none;">
+    <section class="review-section animate-on-scroll">
+        <div class="section-header">
+            <h2>📊 Dataset Explorer</h2>
+            <p class="section-subtitle">Explore the rice disease dataset used for training</p>
+        </div>
+        
+        <div class="glass-card">
+            <div class="card-header">
+                <h3>📁 Dataset Information</h3>
+                <span class="badge-premium">3,355 images</span>
+            </div>
+            <div class="dataset-info-grid">
+                <div class="dataset-info-item">
+                    <span class="info-label">Total Images</span>
+                    <span class="info-value">3,355</span>
+                </div>
+                <div class="dataset-info-item">
+                    <span class="info-label">Disease Classes</span>
+                    <span class="info-value">4</span>
+                </div>
+                <div class="dataset-info-item">
+                    <span class="info-label">Image Format</span>
+                    <span class="info-value">JPG, PNG</span>
+                </div>
+                <div class="dataset-info-item">
+                    <span class="info-label">Resolution</span>
+                    <span class="info-value">224x224</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h3>📸 Sample Images by Class</h3>
+            <div class="sample-grid-premium">
+                <div class="sample-card">
+                    <div class="sample-placeholder" style="background: linear-gradient(135deg, #10B981, #059669);">
+                        <span>🌿</span>
+                    </div>
+                    <p>Healthy - Lá Khỏe mạnh</p>
+                    <span class="sample-count">1,488 images</span>
+                </div>
+                <div class="sample-card">
+                    <div class="sample-placeholder" style="background: linear-gradient(135deg, #EF4444, #DC2626);">
+                        <span>🔥</span>
+                    </div>
+                    <p>Leaf Blast - Đạo ôn lá</p>
+                    <span class="sample-count">779 images</span>
+                </div>
+                <div class="sample-card">
+                    <div class="sample-placeholder" style="background: linear-gradient(135deg, #F59E0B, #D97706);">
+                        <span>🐛</span>
+                    </div>
+                    <p>Hispa - Sâu cuốn lá</p>
+                    <span class="sample-count">565 images</span>
+                </div>
+                <div class="sample-card">
+                    <div class="sample-placeholder" style="background: linear-gradient(135deg, #D4A056, #B8943E);">
+                        <span>🟤</span>
+                    </div>
+                    <p>Brown Spot - Đốm nâu</p>
+                    <span class="sample-count">523 images</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="card-header">
+                <h3>📊 Dataset Visualizations</h3>
+                <span class="badge-premium">EDA</span>
+            </div>
+            <div class="dataset-visuals-grid">
+                <div class="visual-card glass-card">
+                    <h4>Phân bố các lớp bệnh</h4>
+                    <img src="/outputs/visualizations/class_distribution.png" alt="class distribution" loading="lazy">
+                </div>
+                <div class="visual-card glass-card">
+                    <h4>Thống kê độ dài văn bản</h4>
+                    <img src="/outputs/visualizations/text_length_distribution.png" alt="text length" loading="lazy">
+                </div>
+                <div class="visual-card glass-card">
+                    <h4>Tần suất từ khóa xuất hiện</h4>
+                    <img src="/outputs/visualizations/word_frequency.png" alt="word frequency" loading="lazy">
+                </div>
+                <div class="visual-card glass-card">
+                    <h4>Tổng quan tập dữ liệu</h4>
+                    <img src="/outputs/visualizations/class_visual_collage.png" alt="class visual collage" loading="lazy">
+                </div>
+                <div class="visual-card glass-card">
+                    <h4>Tổng quát khoanh vùng lá</h4>
+                    <img src="/outputs/visualizations/comparison_grid.png" alt="comparison grid" loading="lazy">
+                </div>
+                <div class="visual-card glass-card">
+                    <h4>Phân bố và thống kê vùng lá</h4>
+                    <img src="/outputs/visualizations/sample_1_Healthy.png" alt="leaf statistics" loading="lazy">
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="card-header">
+                <h3>🍃 Leaf Metrics Statistics</h3>
+                <span class="badge-premium">Analysis</span>
+            </div>
+            <div class="metrics-stats-grid">
+                <div class="stat-item-premium">
+                    <span class="stat-value-premium">20.7%</span>
+                    <span class="stat-label-premium">Average Coverage</span>
+                </div>
+                <div class="stat-item-premium">
+                    <span class="stat-value-premium">6.92</span>
+                    <span class="stat-label-premium">Aspect Ratio</span>
+                </div>
+                <div class="stat-item-premium">
+                    <span class="stat-value-premium">100%</span>
+                    <span class="stat-label-premium">Valid Masks</span>
+                </div>
+                <div class="stat-item-premium">
+                    <span class="stat-value-premium">99.6%</span>
+                    <span class="stat-label-premium">Max Coverage</span>
+                </div>
+            </div>
+            <div class="leaf-metrics-note">
+                <p>📌 Leaf metrics extracted from 2,348 training samples using hull detection and mask analysis.</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- About Tab -->
+<div id="about" class="tab-content" style="display:none;">
+    <section class="review-section animate-on-scroll">
+        <div class="section-header">
+            <h2>ℹ️ About PlanCare AI</h2>
+            <p class="section-subtitle">Intelligent crop disease detection platform</p>
+        </div>
+
+        <div class="about-grid">
+            <div class="glass-card about-card">
+                <div class="about-icon">🧠</div>
+                <h3>AI-Powered Diagnosis</h3>
+                <p>Uses state-of-the-art deep learning models including EfficientNet-B0 and PhoBERT with Cross-Attention fusion for accurate disease detection.</p>
+            </div>
+            <div class="glass-card about-card">
+                <div class="about-icon">🔬</div>
+                <h3>Multimodal Analysis</h3>
+                <p>Combines visual information from leaf images with textual symptom descriptions for comprehensive and accurate diagnosis.</p>
+            </div>
+            <div class="glass-card about-card">
+                <div class="about-icon">📊</div>
+                <h3>Explainable AI</h3>
+                <p>Provides visual explanations through GradCAM heatmaps, hull detection, and mask visualization for transparent decision-making.</p>
+            </div>
+            <div class="glass-card about-card">
+                <div class="about-icon">🌾</div>
+                <h3>Rice Disease Focus</h3>
+                <p>Specialized in detecting 4 common rice diseases: Brown Spot, Leaf Blast, Hispa, and Healthy leaves with 99.4% accuracy.</p>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <h3>🚀 Technology Stack</h3>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <span class="tech-icon">🖼️</span>
+                    <span class="tech-name">EfficientNet-B0</span>
+                    <span class="tech-desc">Vision backbone</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">📝</span>
+                    <span class="tech-name">PhoBERT</span>
+                    <span class="tech-desc">NLP encoder</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">🔗</span>
+                    <span class="tech-name">Cross-Attention</span>
+                    <span class="tech-desc">Multimodal fusion</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">🔥</span>
+                    <span class="tech-name">GradCAM</span>
+                    <span class="tech-desc">Explainable AI</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">🤖</span>
+                    <span class="tech-name">Gemini AI</span>
+                    <span class="tech-desc">Expert advice</span>
+                </div>
+                <div class="tech-item">
+                    <span class="tech-icon">⚡</span>
+                    <span class="tech-name">PyTorch</span>
+                    <span class="tech-desc">Deep learning</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+// ================================================================
+// BẢNG ÁNH XẠ TÊN BỆNH
+// ================================================================
+const diseaseNames = {
+    'BrownSpot': 'Đốm nâu',
+    'Healthy': 'Lá khỏe',
+    'Hispa': 'Sâu cuốn lá',
+    'LeafBlast': 'Đạo ôn lá'
+};
+
+const diseaseColors = {
+    'BrownSpot': '#D4A056',
+    'Healthy': '#10B981',
+    'Hispa': '#F59E0B',
+    'LeafBlast': '#EF4444'
+};
+
+function getVietnameseName(name) {
+    return diseaseNames[name] || name;
+}
+
+// ================================================================
+// TAB SWITCHING FUNCTION
+// ================================================================
+function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+    const activeTab = document.getElementById(tabId);
+    if (activeTab) {
+        activeTab.style.display = 'block';
+        activeTab.style.animation = 'fadeUp 0.6s ease forwards';
+    }
+    document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+    const activeLink = document.querySelector(`.nav-link[data-tab="${tabId}"]`);
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
+}
+
+// ================================================================
+// RENDER PIPELINE STEPS
+// ================================================================
+function renderPipelineSteps(steps, containerId) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    
+    let html = '';
+    steps.forEach((step, index) => {
+        const statusClass = step.status === 'completed' ? 'step-completed' : 'step-error';
+        const statusIcon = step.status === 'completed' ? '✅' : '❌';
+        
+        html += `
+            <div class="pipeline-step ${statusClass}">
+                <div class="step-indicator">
+                    <span class="step-number">${index + 1}</span>
+                    <span class="step-icon">${step.icon || '📌'}</span>
+                </div>
+                <div class="step-content">
+                    <div class="step-title">${step.step}</div>
+                    <div class="step-description">${step.description}</div>
+                    ${step.coverage ? `<div class="step-meta">Coverage: ${(step.coverage * 100).toFixed(1)}%</div>` : ''}
+                    ${step.aspect_ratio ? `<div class="step-meta">Aspect Ratio: ${step.aspect_ratio.toFixed(1)}</div>` : ''}
+                </div>
+                <div class="step-status">${statusIcon}</div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+}
+
+// ================================================================
+// RENDER PROBABILITIES
+// ================================================================
+function renderProbabilities(probs, prediction) {
+    const container = document.getElementById('final-probs');
+    if (!container) return;
+    
+    let html = '';
+    for (const [cls, prob] of Object.entries(probs)) {
+        const percent = (prob * 100).toFixed(1);
+        const clsVi = getVietnameseName(cls);
+        const isHighlight = cls === prediction;
+        const barColor = diseaseColors[cls] || '#D4A056';
+        
+        html += `
+            <div class="prob-item">
+                <div class="prob-label">
+                    <span>${clsVi}</span>
+                    <span class="prob-percent">${percent}%</span>
+                </div>
+                <div class="prob-bar ${isHighlight ? 'highlight' : ''}">
+                    <div class="prob-fill" style="width: ${percent}%; background: ${isHighlight ? barColor : '#3A3F4F'}"></div>
+                </div>
+            </div>
+        `;
+    }
+    
+    container.innerHTML = html;
+}
+
+// ================================================================
+// UPLOAD AREA HANDLERS
+// ================================================================
+const uploadArea = document.getElementById('upload-area');
+const imageInput = document.getElementById('image-input');
+const previewImg = document.getElementById('preview-image');
+const uploadPlaceholder = document.getElementById('upload-placeholder');
+const uploadError = document.getElementById('upload-error');
+
+let hasImage = false;
+
+if (uploadArea) {
+    uploadArea.addEventListener('click', () => {
+        imageInput.click();
+    });
+
+    uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('drag-over');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('drag-over');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('drag-over');
+        const file = e.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            handleFile(file);
+        }
+    });
+
+    imageInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+            handleFile(e.target.files[0]);
+        }
+    });
+}
+
+function handleFile(file) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        previewImg.src = event.target.result;
+        previewImg.style.display = 'block';
+        uploadPlaceholder.style.display = 'none';
+        uploadError.style.display = 'none';
+        hasImage = true;
+        // Gán file vào input để submit
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        imageInput.files = dt.files;
+    };
+    reader.readAsDataURL(file);
+}
+
+// ================================================================
+// FORM SUBMISSION
+// ================================================================
+const form = document.getElementById('predict-form');
+const resultDiv = document.getElementById('predict-result');
+const resultContent = document.getElementById('result-content');
+const loadingDiv = document.getElementById('loading');
+const pipelineDiv = document.getElementById('pipeline-container');
+const btnAnalyze = document.getElementById('btn-analyze');
+
+if (form) {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Kiểm tra đã chọn ảnh chưa
+        if (!hasImage && (!imageInput.files || imageInput.files.length === 0)) {
+            uploadError.style.display = 'block';
+            uploadError.textContent = '⚠️ Vui lòng chọn ảnh để phân tích';
+            uploadArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return;
+        }
+        
+        uploadError.style.display = 'none';
+        
+        // Ẩn kết quả cũ, hiển thị loading
+        resultDiv.style.display = 'none';
+        pipelineDiv.style.display = 'none';
+        loadingDiv.style.display = 'flex';
+        
+        // Disable button
+        btnAnalyze.disabled = true;
+        btnAnalyze.querySelector('.btn-text').textContent = 'Processing...';
+
+        const fd = new FormData(form);
+
+        try {
+            const res = await fetch('/api/predict_pipeline', { method: 'POST', body: fd });
+            const data = await res.json();
+
+            if (data.error) {
+                resultContent.innerHTML = `<div class="error-message">${data.error}</div>`;
+                resultDiv.style.display = 'block';
+                loadingDiv.style.display = 'none';
+                return;
+            }
+
+            // ================================================================
+            // RENDER PIPELINE STEPS
+            // ================================================================
+            
+            if (data.image && data.image.length > 0) {
+                renderPipelineSteps(data.image, 'image-steps');
+            }
+            
+            if (data.text && data.text.length > 0) {
+                renderPipelineSteps(data.text, 'text-steps');
+            } else {
+                document.getElementById('text-steps').innerHTML = `
+                    <div class="pipeline-step step-completed">
+                        <div class="step-indicator">
+                            <span class="step-number">1</span>
+                            <span class="step-icon">📝</span>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-title">Không có văn bản đầu vào</div>
+                            <div class="step-description">Chỉ sử dụng đặc trưng ảnh để dự đoán</div>
+                        </div>
+                        <div class="step-status">✅</div>
+                    </div>
+                `;
+            }
+            
+            if (data.fusion && data.fusion.length > 0) {
+                renderPipelineSteps(data.fusion, 'fusion-steps');
+            }
+
+            // ================================================================
+            // RENDER RESULTS
+            // ================================================================
+            if (data.result) {
+                const r = data.result;
+                const predVi = getVietnameseName(r.prediction);
+                const color = diseaseColors[r.prediction] || '#D4A056';
+
+                let html = `
+                    <div class="result-header">
+                        <div class="result-disease" style="border-color: ${color}">
+                            <span class="disease-name">${predVi}</span>
+                            <span class="disease-confidence">${(r.probs[r.prediction] * 100).toFixed(1)}%</span>
+                        </div>
+                        <div class="result-meta">
+                            <span>Coverage: ${(r.coverage * 100).toFixed(1)}%</span>
+                            <span>Aspect Ratio: ${r.aspect_ratio.toFixed(1)}</span>
+                        </div>
+                    </div>
+                    <div class="result-probs-detail">
+                        <h4>Confidence Distribution</h4>
+                `;
+
+                for (const [cls, prob] of Object.entries(r.probs)) {
+                    const percent = (prob * 100).toFixed(1);
+                    const clsVi = getVietnameseName(cls);
+                    const isHighlight = cls === r.prediction;
+                    html += `
+                        <div class="prob-item">
+                            <div class="prob-label">
+                                <span>${clsVi}</span>
+                                <span class="prob-percent">${percent}%</span>
+                            </div>
+                            <div class="prob-bar ${isHighlight ? 'highlight' : ''}">
+                                <div class="prob-fill" style="width: ${percent}%; background: ${isHighlight ? color : '#3A3F4F'}"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                html += `</div>`;
+                resultContent.innerHTML = html;
+                resultDiv.style.display = 'block';
+                resultDiv.style.animation = 'fadeUp 0.6s ease forwards';
+
+                // Update pipeline images
+                document.getElementById('pipeline-original-img').src = r.image_url || '';
+                if (r.hull_url) document.getElementById('pipeline-hull-img').src = r.hull_url;
+                if (r.mask_url) document.getElementById('pipeline-mask-img').src = r.mask_url;
+                if (r.gradcam_url) document.getElementById('pipeline-gradcam-img').src = r.gradcam_url;
+
+                document.getElementById('final-prediction').textContent = `${predVi} (${r.prediction})`;
+                document.querySelector('.pipeline-status').textContent = `✅ Hoàn thành`;
+
+                renderProbabilities(r.probs, r.prediction);
+
+                pipelineDiv.style.display = 'block';
+                pipelineDiv.style.animation = 'fadeUp 0.6s ease forwards';
+            }
+
+            // ================================================================
+            // GEMINI AI
+            // ================================================================
+            if (data.gemini) {
+                const geminiContainer = document.getElementById('gemini-container');
+                const geminiContent = document.getElementById('gemini-content');
+                geminiContainer.style.display = 'block';
+                geminiContainer.style.animation = 'fadeUp 0.6s ease 0.3s forwards';
+                let html = data.gemini;
+                if (typeof marked !== 'undefined') {
+                    try {
+                        html = marked.parse(data.gemini);
+                    } catch (e) {}
+                }
+                geminiContent.innerHTML = html;
+            }
+
+        } catch (err) {
+            resultContent.innerHTML = `<div class="error-message">Connection error: ${err.message}</div>`;
+            resultDiv.style.display = 'block';
+        } finally {
+            loadingDiv.style.display = 'none';
+            btnAnalyze.disabled = false;
+            btnAnalyze.querySelector('.btn-text').textContent = 'Analyze Disease';
+        }
+    });
+}
+</script>
+{% endblock %}

@@ -29,6 +29,9 @@ filelock==3.29.0
 fonttools==4.63.0
 fqdn==1.5.1
 fsspec==2026.4.0
+flask
+grad-cam
+timm
 h11==0.16.0
 hf-xet==1.5.0
 httpcore==1.0.9

@@ -39,3 +39,8 @@ src/datasets/EDA/check_gen_text.py
 src/datasets/EDA/edit_text_data.py
 
 SLIDE_REPORT.md
+
+configs/config.yaml
+
+uploadsconfigs/config.yaml
+outputs/csv/*.csv

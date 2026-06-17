@@ -1,3 +1,5 @@
+# evaluation/xai_analysis.py - FIXED VERSION
+
 import torch
 import matplotlib.pyplot as plt
 from pathlib import Path
@@ -14,8 +16,8 @@ except ImportError:
     print("Warning: pytorch_grad_cam not installed. Install with: pip install pytorch_grad_cam")
 
 
-def generate_gradcam_visualization(model, dataloader, device, class_names, output_dir="outputs", max_samples=20):
-    """Generate GradCAM visualizations for correct and incorrect predictions"""
+def generate_gradcam_visualization(model, dataloader, device, class_names, output_dir="outputs", max_samples=10):
+    """Generate GradCAM visualizations for correct and incorrect predictions - FIXED version"""
     if not GRADCAM_AVAILABLE:
         print("GradCAM not available. Skipping...")
         print("Install with: pip install pytorch_grad_cam")
@@ -23,8 +25,7 @@ def generate_gradcam_visualization(model, dataloader, device, class_names, outpu
     
     model.eval()
     
-    # Target layer for GradCAM (last layer of EfficientNet)
-    # Try different layer names based on the model architecture
+    # Target layer for GradCAM
     if hasattr(model.vision_encoder.backbone, 'blocks'):
         target_layers = [model.vision_encoder.backbone.blocks[-1]]
     elif hasattr(model.vision_encoder.backbone, 'features'):
@@ -36,7 +37,7 @@ def generate_gradcam_visualization(model, dataloader, device, class_names, outpu
     output_path = Path(output_dir) / "gradcam"
     output_path.mkdir(parents=True, exist_ok=True)
     
-    # Get a few samples from dataloader
+    # Get samples
     samples_to_visualize = []
     for batch_idx, batch in enumerate(dataloader):
         if batch_idx >= max_samples:
@@ -48,7 +49,7 @@ def generate_gradcam_visualization(model, dataloader, device, class_names, outpu
     for batch_idx, batch in enumerate(samples_to_visualize):
         images = batch["image"].to(device)
         input_ids = batch["input_ids"].to(device)
-        attention_mask = batch["attention_mask"].to(device)
+        attention_mask = batch["attention_mask_text"].to(device)  # FIXED: use correct key
         labels = batch["label"].to(device)
         metadata = batch.get("metadata")
         
@@ -60,29 +61,22 @@ def generate_gradcam_visualization(model, dataloader, device, class_names, outpu
         preds = outputs.argmax(dim=1)
         
         # Generate GradCAM for each image
-        for i in range(min(len(images), 3)):  # Limit to 3 images per batch
+        for i in range(min(len(images), 3)):
             try:
-                # Create CAM instance for each image
                 cam = GradCAM(model=model.vision_encoder.backbone, target_layers=target_layers)
                 
-                # Chuẩn bị input cho GradCAM
                 input_tensor = images[i].unsqueeze(0)
-                
-                # Get CAM
                 grayscale_cam = cam(input_tensor=input_tensor)[0]
                 
-                # Convert image to RGB (denormalize)
+                # Denormalize image
                 img_np = images[i].cpu().permute(1, 2, 0).numpy()
-                # Denormalize (assuming ImageNet stats)
                 mean = np.array([0.485, 0.456, 0.406])
                 std = np.array([0.229, 0.224, 0.225])
                 img_np = img_np * std + mean
                 img_np = np.clip(img_np, 0, 1)
                 
-                # Apply CAM
                 visualization = show_cam_on_image(img_np, grayscale_cam, use_rgb=True)
                 
-                # Save
                 true_label = class_names[labels[i].item()]
                 pred_label = class_names[preds[i].item()]
                 status = "correct" if labels[i] == preds[i] else "incorrect"

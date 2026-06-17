@@ -6,6 +6,9 @@ model:
   num_classes: 4
   fusion: cross_attention
 
+# which tokenizer to use for text encoding
+text_tokenizer: vinai/phobert-base
+
 dataset:
   num_classes: 4
   classes:
@@ -24,12 +27,20 @@ data:
 
 training:
   seed: 42
-  batch_size: 16
-  epochs: 30
-  lr: 0.0001  # Quan trọng: phải là số, không phải string "1e-4"
-  weight_decay: 0.0001  # Cũng nên là số
-  grad_clip_norm: 1.0
-  patience: 4
+  batch_size: 32                    # Tăng từ 16 lên 32 → học nhanh hơn (giảm 1/2 thời gian mỗi epoch)
+  epochs: 25                        # Tăng từ 20 lên 25 (để early stopping quyết định)
+  lr: 0.0001                        # Giữ nguyên
+  weight_decay: 0.0005              # Tăng từ 0.0001 lên 0.0005 → chống overfit tốt hơn
+  grad_clip_norm: 0.5               # Giảm từ 1.0 xuống 0.5 → gradient ổn định hơn
+  patience: 6                       # Tăng từ 4 lên 6 → theo dõi lâu hơn, tránh early stopping sớm
+  
+  # Thêm các tham số mới
+  warmup_epochs: 3                  # Warmup: tăng LR từ từ trong 3 epoch đầu
+  min_lr: 1e-6                      # Learning rate tối thiểu (cho CosineAnnealing)
+  label_smoothing: 0.05             # Label smoothing: tránh overconfidence (0.05 = 5%)
+  
+  # Mixed precision (giữ nguyên)
+  use_amp: true
 
 evaluation:
   metrics:
@@ -43,3 +54,34 @@ outputs:
   figures: outputs/figures
   metrics: outputs/metrics
   logs: outputs/logs
+
+# Inference-specific settings used by the Flask app
+inference:
+  device: cuda                      # change to 'cuda' if GPU available
+  checkpoint: outputs/checkpoints/best_model.pth
+  gradcam: true                     # enable gradcam generation if pytorch_grad_cam installed
+  max_text_length: 128
+
+# Gemini / LLM integration settings (optional)
+gemini:
+  enabled: true
+  model_id: "gemini-flash-lite-latest"  # e.g. 'gemini-flash-lite-latest' or other model id
+  endpoint: ""                      # optional endpoint if needed
+  model: "gemini"
+  timeout_seconds: 10
+
+# UI / dashboard preferences
+ui:
+  title: "Crop Disease VLM - Dashboard"
+  subtitle: "Rice disease detection and analysis"
+  primary_color: "#2b6cb0"
+  accent_color: "#68d391"
+  max_display_figures: 8
+  show_training_summary: true
+  show_gradcam_in_review: true
+
+# Leaf attention configuration (thêm mới)
+leaf_attention:
+  use_leaf_mask: true
+  attention_weight: 0.15
+  min_coverage_threshold: 0.05

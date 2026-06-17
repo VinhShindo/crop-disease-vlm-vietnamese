@@ -1,0 +1,338 @@
+[
+  {
+    "index": 0,
+    "label": "BrownSpot",
+    "src": "dataset\\raw\\BrownSpot\\IMG_20190420_190416.jpg",
+    "out": "dataset\\cleaned\\BrownSpot\\IMG_20190420_190416_clean.jpg",
+    "original_shape": [
+      3120,
+      3120,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      0,
+      3120,
+      3120
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 216.0120849609375,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 1,
+    "label": "BrownSpot",
+    "src": "dataset\\raw\\BrownSpot\\IMG_20190419_114339.jpg",
+    "out": "dataset\\cleaned\\BrownSpot\\IMG_20190419_114339_clean.jpg",
+    "original_shape": [
+      1839,
+      1839,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      267,
+      1839,
+      1376
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 241.2231903076172,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 2,
+    "label": "BrownSpot",
+    "src": "dataset\\raw\\BrownSpot\\IMG_20190420_194711.jpg",
+    "out": "dataset\\cleaned\\BrownSpot\\IMG_20190420_194711_clean.jpg",
+    "original_shape": [
+      1396,
+      1396,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      336,
+      1396,
+      895
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 188.08914184570312,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 3,
+    "label": "BrownSpot",
+    "src": "dataset\\raw\\BrownSpot\\IMG_20190420_194503.jpg",
+    "out": "dataset\\cleaned\\BrownSpot\\IMG_20190420_194503_clean.jpg",
+    "original_shape": [
+      1552,
+      1552,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      483,
+      1552,
+      1038
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 211.0335693359375,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 4,
+    "label": "Healthy",
+    "src": "dataset\\raw\\Healthy\\IMG_20190419_144556.jpg",
+    "out": "dataset\\cleaned\\Healthy\\IMG_20190419_144556_clean.jpg",
+    "original_shape": [
+      1990,
+      1990,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      369,
+      1990,
+      1362
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 192.81178283691406,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 5,
+    "label": "Healthy",
+    "src": "dataset\\raw\\Healthy\\IMG_20190419_130258.jpg",
+    "out": "dataset\\cleaned\\Healthy\\IMG_20190419_130258_clean.jpg",
+    "original_shape": [
+      3120,
+      3120,
+      3
+    ],
+    "cropped_bbox": [
+      445,
+      0,
+      2675,
+      3120
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 229.1574249267578,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 6,
+    "label": "Healthy",
+    "src": "dataset\\raw\\Healthy\\IMG_20190419_115049.jpg",
+    "out": "dataset\\cleaned\\Healthy\\IMG_20190419_115049_clean.jpg",
+    "original_shape": [
+      3120,
+      3120,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      0,
+      2939,
+      3120
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 225.29110717773438,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 7,
+    "label": "Healthy",
+    "src": "dataset\\raw\\Healthy\\IMG_20190424_133742.jpg",
+    "out": "dataset\\cleaned\\Healthy\\IMG_20190424_133742_clean.jpg",
+    "original_shape": [
+      1985,
+      1985,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      309,
+      1985,
+      1358
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 198.69882202148438,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 8,
+    "label": "Hispa",
+    "src": "dataset\\raw\\Hispa\\IMG_20190424_133932.jpg",
+    "out": "dataset\\cleaned\\Hispa\\IMG_20190424_133932_clean.jpg",
+    "original_shape": [
+      2095,
+      2095,
+      3
+    ],
+    "cropped_bbox": [
+      207,
+      0,
+      1719,
+      2095
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 220.9832763671875,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 9,
+    "label": "Hispa",
+    "src": "dataset\\raw\\Hispa\\IMG_20190419_115032.jpg",
+    "out": "dataset\\cleaned\\Hispa\\IMG_20190419_115032_clean.jpg",
+    "original_shape": [
+      1742,
+      1742,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      64,
+      1742,
+      1584
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 228.49514770507812,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 10,
+    "label": "Hispa",
+    "src": "dataset\\raw\\Hispa\\IMG_20190419_173050.jpg",
+    "out": "dataset\\cleaned\\Hispa\\IMG_20190419_173050_clean.jpg",
+    "original_shape": [
+      2127,
+      2127,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      390,
+      2127,
+      1526
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 212.15818786621094,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 11,
+    "label": "Hispa",
+    "src": "dataset\\raw\\Hispa\\IMG_20190419_100505.jpg",
+    "out": "dataset\\cleaned\\Hispa\\IMG_20190419_100505_clean.jpg",
+    "original_shape": [
+      3120,
+      3120,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      399,
+      3120,
+      2721
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 240.56130981445312,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 12,
+    "label": "LeafBlast",
+    "src": "dataset\\raw\\LeafBlast\\IMG_20190419_103956.jpg",
+    "out": "dataset\\cleaned\\LeafBlast\\IMG_20190419_103956_clean.jpg",
+    "original_shape": [
+      1460,
+      1460,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      65,
+      1460,
+      974
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 225.1113739013672,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 13,
+    "label": "LeafBlast",
+    "src": "dataset\\raw\\LeafBlast\\IMG_20190419_111213.jpg",
+    "out": "dataset\\cleaned\\LeafBlast\\IMG_20190419_111213_clean.jpg",
+    "original_shape": [
+      2390,
+      2390,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      1101,
+      2390,
+      628
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 223.3038787841797,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 14,
+    "label": "LeafBlast",
+    "src": "dataset\\raw\\LeafBlast\\IMG_20190419_125429.jpg",
+    "out": "dataset\\cleaned\\LeafBlast\\IMG_20190419_125429_clean.jpg",
+    "original_shape": [
+      1727,
+      1727,
+      3
+    ],
+    "cropped_bbox": [
+      0,
+      0,
+      1727,
+      1727
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 210.289794921875,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  },
+  {
+    "index": 15,
+    "label": "LeafBlast",
+    "src": "dataset\\raw\\LeafBlast\\IMG_20190419_132052.jpg",
+    "out": "dataset\\cleaned\\LeafBlast\\IMG_20190419_132052_clean.jpg",
+    "original_shape": [
+      1779,
+      1779,
+      3
+    ],
+    "cropped_bbox": [
+      774,
+      0,
+      300,
+      1779
+    ],
+    "brightness_adjusted": false,
+    "mean_brightness_before": 170.0529327392578,
+    "denoised": true,
+    "denoise_method": "nl_means"
+  }
+]

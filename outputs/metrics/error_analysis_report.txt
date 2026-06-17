@@ -3,20 +3,23 @@ ERROR ANALYSIS REPORT
 ============================================================
 
 Total samples analyzed: 504
-Total errors: 4
-Error rate: 0.79%
-Accuracy: 99.21%
+Total errors: 3
+Error rate: 0.60%
+Accuracy: 99.40%
 
 ----------------------------------------
 CONFUSION PAIRS (True → Predicted):
 ----------------------------------------
-  BrownSpot → LeafBlast: 4 errors (100.0%)
+  BrownSpot → Healthy: 1 errors (33.3%)
+  LeafBlast → BrownSpot: 1 errors (33.3%)
+  LeafBlast → Healthy: 1 errors (33.3%)
 
 ----------------------------------------
 PER-CLASS ERROR ANALYSIS:
 ----------------------------------------
-  BrownSpot: 4/78 errors (5.13%)
-    → Confused with: LeafBlast(4)
+  BrownSpot: 1/78 errors (1.28%)
+    → Confused with: Healthy(1)
   Healthy: 0/224 errors (0.00%)
   Hispa: 0/85 errors (0.00%)
-  LeafBlast: 0/117 errors (0.00%)
+  LeafBlast: 2/117 errors (1.71%)
+    → Confused with: Healthy(1), BrownSpot(1)

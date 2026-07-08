@@ -32,7 +32,7 @@ Mục tiêu đánh giá: đo lường khả năng phân biệt các bệnh tươ
 Sơ đồ hệ thống (minh họa):
 
 <div align="center">
-  <img src="docs/research_notes/so_do.png"
+  <img src="docs/figures/fig_architecture (3).png"
        alt="System Architecture"
        width="1000">
 </div>
